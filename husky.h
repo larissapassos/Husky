@@ -1,11 +1,11 @@
-#ifndef _FUNCTIONALIBRARY_H
-#define _FUNCTIONALIBRARY_H
+#ifndef _HUSKY_H
+#define _HUSKY_H
 
 #include <functional>
 #include <algorithm>
 #include <numeric>
 
-namespace functionalibrary {
+namespace husky {
 
 	template<typename Function, typename Iterator, typename T>
 	T foldl(Iterator first, Iterator last, T init, Function f) { return std::accumulate(first, last, init, f); }
@@ -22,7 +22,6 @@ namespace functionalibrary {
 	template<typename Iterator>
 	bool or(Iterator first, Iterator last) { return std::accumulate(first, last, false, std::logical_or<bool>()); }
 
-	// Look into concat and concatMap
 
 	template <typename Cont,typename UnaryOperation>
 	Cont map(const Cont& c, UnaryOperation f) { 
@@ -46,16 +45,16 @@ namespace functionalibrary {
 	}
 
 
-
-	template<typename TYPE, typename Predicate>
-	TYPE filter( const TYPE & data, Predicate good){
+	//filter function returns a list with filtered data
+	template<typename T, typename Predicate>
+	T filter( const T & data, Predicate good){
 		auto filteredData(data);  	//Use copy constructor to copy data set
 					
 		filteredData.erase(remove_if(filteredData.begin(), filteredData.end(),
-		[&](typename TYPE::value_type &x) { return !good(x); }), filteredData.end());
+		[&](typename T::value_type &x) { return !good(x); }), filteredData.end());
 
 		return filteredData;
 	}
 }
 
-#endif /* _FUNCTIONALIBRARY_H */
+#endif /* _HUSKY_H */
