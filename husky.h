@@ -48,6 +48,7 @@ namespace husky {
 	//filter function returns a list with filtered data
 	template<typename T, typename Predicate>
 	T filter( const T & data, Predicate good){
+
 		auto filteredData(data);  	//Use copy constructor to copy data set
 					
 		filteredData.erase(remove_if(filteredData.begin(), filteredData.end(),
