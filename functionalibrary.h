@@ -44,6 +44,18 @@ namespace functionalibrary {
 		}
 		return result;
 	}
+
+
+
+	template<typename TYPE, typename Predicate>
+	TYPE filter( const TYPE & data, Predicate good){
+		auto filteredData(data);  	//Use copy constructor to copy data set
+					
+		filteredData.erase(remove_if(filteredData.begin(), filteredData.end(),
+		[&](typename TYPE::value_type &x) { return !good(x); }), filteredData.end());
+
+		return filteredData;
+	}
 }
 
 #endif /* _FUNCTIONALIBRARY_H */
