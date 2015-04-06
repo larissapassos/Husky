@@ -65,5 +65,5 @@ The elements in the range [first,last) are accessed (each element is accessed ex
 
 Error Handling
 --------------
-Throws if any of std::multipkies, the assignments or an operation on an iterator throws.
+Throws if any of std::multiplies, the assignments or an operation on an iterator throws.
 Note that invalid arguments cause undefined behavior.
