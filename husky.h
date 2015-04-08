@@ -7,6 +7,21 @@
 
 namespace husky {
 
+	template<typename T, typename Cont>
+	class Hcontainer {
+		using value_type = T;
+	public:
+		Hcontainer(Cont c) :container(c) {}
+		Hcontainer() {
+			container = new Cont;
+		}
+
+		// TODO: Common operators
+	private:
+		Cont container;
+	};
+
+	/*
 	template<typename Function, typename Iterator, typename T>
 	T foldl(Iterator first, Iterator last, T init, Function f) { return std::accumulate(first, last, init, f); }
 
@@ -23,8 +38,8 @@ namespace husky {
 	bool or(Iterator first, Iterator last) { return std::accumulate(first, last, false, std::logical_or<bool>()); }
 
 
-	template <typename Cont,typename UnaryOperation>
-	Cont map(const Cont& c, UnaryOperation f) { 
+	template <typename Cont, typename UnaryOperation>
+	Cont map(const Cont& c, UnaryOperation f) {
 		Cont c2;
 		for (auto elm : c) {
 			auto new_elm = f(elm);
@@ -47,15 +62,15 @@ namespace husky {
 
 	//filter function returns a list with filtered data
 	template<typename T, typename Predicate>
-	T filter( const T & data, Predicate good){
+	T filter(const T & data, Predicate good){
 
 		auto filteredData(data);  	//Use copy constructor to copy data set
-					
+
 		filteredData.erase(remove_if(filteredData.begin(), filteredData.end(),
-		[&](typename T::value_type &x) { return !good(x); }), filteredData.end());
+			[&](typename T::value_type &x) { return !good(x); }), filteredData.end());
 
 		return filteredData;
-	}
+	}*/
 }
 
 #endif /* _HUSKY_H */
