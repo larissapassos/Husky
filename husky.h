@@ -1,26 +1,74 @@
 #ifndef _HUSKY_H
 #define _HUSKY_H
 
-#include <functional>
 #include <algorithm>
+#include <functional>
+#include <iostream>
+#include <iterator>
 #include <numeric>
 
 namespace husky {
 
 	template<typename T, typename Cont>
-	class Hcontainer {
+	class Hlist {
 		using value_type = T;
 	public:
-		Hcontainer(Cont c) :container(c) {}
-		Hcontainer() {
-			container = new Cont;
+		Hlist(Cont c) :container(c) {}
+		Hlist() { container; }
+		Hlist(T a) {
+			container;
+			container.push_back(a);
 		}
 
-		// TODO: Common operators
+		//friend auto begin(Hlist<T, Cont>& l) -> decltype(l.container.begin()) { return l.container.begin(); }
+		//friend auto end(Hlist<T, Cont>& l) -> decltype(l.container.end()) { return l.container.end(); }
+
+		int size() { return container.size(); }
+
+		T operator[](int index) {
+			int i = 0;
+			T elm;
+			for (auto x : container) {
+				elm = x;
+				if (i == index) {
+					return x;
+				}
+				++i;
+			}
+			return elm;
+		}
+
+		void push_head(T elm) {
+			auto it = container.begin();
+			container.insert(it, elm);
+		}
+
+		void push_tail(T elm) { container.push_back(); }
+
+		void remove_head() {
+			auto it = container.begin();
+			container.erase(it);
+		}
+
+		void remove_tail() { container.pop_back(); }
 	private:
 		Cont container;
-	};
+	};	
 
+	template<typename T, typename Cont>
+	std::ostream& operator<<(std::ostream& os, Hlist<T, Cont>& l) {
+		os << "[";
+		for (int i = 0; i < l.size(); ++i) {
+			if (i != (l.size() - 1)) {
+				os << l[i] << ",";
+			}
+			else {
+				os << l[i];
+			}
+		}
+		os << "]";
+		return os;
+	}
 	/*
 	template<typename Function, typename Iterator, typename T>
 	T foldl(Iterator first, Iterator last, T init, Function f) { return std::accumulate(first, last, init, f); }
