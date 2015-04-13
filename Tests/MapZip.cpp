@@ -33,7 +33,7 @@ int main() {
 	Hlist<int, vector<int>> h2 = map(h, add42);
 	cout << "hlist usando map: " << h2 << endl;
 
-	//auto h3 = zip(h, h2);
-	//cout << "zip: ";
-	//printTuple(h3);
+	auto h3 = zip(h, h2);
+	cout << "zip: ";
+	printTuple(h3);
 }

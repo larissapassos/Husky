@@ -113,10 +113,10 @@ namespace husky {
 		}
 		return l2;
 	}
-	/*
-	template <typename T, typename V, typename Cont>
-	Hlist<std::pair<T,V>, Cont> zip(Hlist<T, Cont>& l1, Hlist<V, Cont>& l2) {
-		Hlist<std::pair<T,V>, Cont> result;
+
+	template <typename T, typename V, typename Cont1, typename Cont2>
+	Hlist<std::pair<T,V>, std::vector<std::pair<T,V>>> zip(Hlist<T, Cont1>& l1, Hlist<V, Cont2>& l2) {
+		Hlist<std::pair<T, V>, std::vector<std::pair<T, V>>> result;
 		int len = std::min(l1.size(), l2.size());
 		for (int i = 0; i < len; ++i) {
 			std::pair<T, V> new_elm = std::make_pair(l1[i], l2[i]);
@@ -124,7 +124,7 @@ namespace husky {
 		}
 		return result;
 	}
-	*/
+	
 	/*
 	//filter function returns a list with filtered data
 	template<typename T, typename Predicate>
