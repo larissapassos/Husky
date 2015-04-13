@@ -38,12 +38,14 @@ namespace husky {
 			return elm;
 		}
 
-		void push_head(T elm) {
+		//todo: const operator[]
+
+		void add_head(T elm) {
 			auto it = container.begin();
 			container.insert(it, elm);
 		}
 
-		void push_tail(T elm) { container.push_back(); }
+		void add_tail(T elm) { container.push_back(elm); }
 
 		void remove_head() {
 			auto it = container.begin();
@@ -51,6 +53,14 @@ namespace husky {
 		}
 
 		void remove_tail() { container.pop_back(); }
+
+		friend Hlist<T, Cont>& operator+= (Hlist<T, Cont>& l1, Hlist<T, Cont>& l2) {
+			for (int i = 0; i < l2.size(); ++i) {
+				l1.add_tail(l2[i]);
+			}
+			return l1;
+		}
+
 	private:
 		Cont container;
 	};	
@@ -69,6 +79,14 @@ namespace husky {
 		os << "]";
 		return os;
 	}
+
+	template <typename T, typename Cont>
+	Hlist<T, Cont> cons(T head, Hlist<T, Cont>& tail) {
+		Hlist<T, Cont> newList{ head };
+		newList += tail;
+		return newList;
+	}
+
 	/*
 	template<typename Function, typename Iterator, typename T>
 	T foldl(Iterator first, Iterator last, T init, Function f) { return std::accumulate(first, last, init, f); }
@@ -84,30 +102,30 @@ namespace husky {
 
 	template<typename Iterator>
 	bool or(Iterator first, Iterator last) { return std::accumulate(first, last, false, std::logical_or<bool>()); }
+	*/
 
-
-	template <typename Cont, typename UnaryOperation>
-	Cont map(const Cont& c, UnaryOperation f) {
-		Cont c2;
-		for (auto elm : c) {
-			auto new_elm = f(elm);
-			c2.push_back(new_elm);
+	template <typename T, typename Cont, typename UnaryOperation>
+	Hlist<T, Cont> map(Hlist<T, Cont>& l, UnaryOperation f) {
+		Hlist<T, Cont> l2;
+		for (int i = 0; i < l.size(); ++i) {
+			T new_elm = f(l[i]);
+			l2.add_tail(new_elm);
 		}
-		return c2;
+		return l2;
 	}
-
-	template <typename Cont1, typename Cont2>
-	std::vector<std::pair <typename Cont1::value_type, typename Cont2::value_type> > zip(const Cont1& c1, const Cont2& c2) {
-		std::vector<std::pair <typename Cont1::value_type, typename Cont2::value_type> > result;
-		int len = std::min(c1.size(), c2.size());
+	/*
+	template <typename T, typename V, typename Cont>
+	Hlist<std::pair<T,V>, Cont> zip(Hlist<T, Cont>& l1, Hlist<V, Cont>& l2) {
+		Hlist<std::pair<T,V>, Cont> result;
+		int len = std::min(l1.size(), l2.size());
 		for (int i = 0; i < len; ++i) {
-			auto new_elm = std::make_pair(c1[i], c2[i]);
-			result.push_back(new_elm);
+			std::pair<T, V> new_elm = std::make_pair(l1[i], l2[i]);
+			result.add_tail(new_elm);
 		}
 		return result;
 	}
-
-
+	*/
+	/*
 	//filter function returns a list with filtered data
 	template<typename T, typename Predicate>
 	T filter(const T & data, Predicate good){
