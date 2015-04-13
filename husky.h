@@ -6,12 +6,15 @@
 #include <iostream>
 #include <iterator>
 #include <numeric>
+#include <vector>
 
 namespace husky {
 
 	template<typename T, typename Cont>
 	class Hlist {
 		using value_type = T;
+		using iterator_type = typename Cont::iterator;
+		using const_iterator_type = typename Cont::const_iterator;
 	public:
 		Hlist(Cont c) :container(c) {}
 		Hlist() { container; }
@@ -20,8 +23,10 @@ namespace husky {
 			container.push_back(a);
 		}
 
-		//friend auto begin(Hlist<T, Cont>& l) -> decltype(l.container.begin()) { return l.container.begin(); }
-		//friend auto end(Hlist<T, Cont>& l) -> decltype(l.container.end()) { return l.container.end(); }
+		iterator_type begin() { return container.begin(); }
+		iterator_type end() { return container.end(); }
+		const_iterator_type begin() const { return container.begin(); }
+		const_iterator_type end() const { return container.end(); }
 
 		int size() const { return container.size(); }
 
@@ -68,15 +73,10 @@ namespace husky {
 	};	
 
 	template<typename T, typename Cont>
-	std::ostream& operator<<(std::ostream& os, const Hlist<T, Cont>& l) {
-		os << "[";
-		for (int i = 0; i < l.size(); ++i) {
-			if (i != (l.size() - 1)) {
-				os << l[i] << ",";
-			}
-			else {
-				os << l[i];
-			}
+	std::ostream& operator<<(std::ostream& os, Hlist<T, Cont>& l) {
+		os << "[ ";
+		for (auto elm : l) {
+			os << elm << " ";
 		}
 		os << "]";
 		return os;
@@ -109,8 +109,8 @@ namespace husky {
 	template <typename T, typename Cont, typename UnaryOperation>
 	Hlist<T, Cont> map(const Hlist<T, Cont>& l, UnaryOperation f) {
 		Hlist<T, Cont> l2;
-		for (int i = 0; i < l.size(); ++i) {
-			T new_elm = f(l[i]);
+		for (auto elm : l) {
+			T new_elm = f(elm);
 			l2.add_tail(new_elm);
 		}
 		return l2;
