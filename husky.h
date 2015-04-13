@@ -101,10 +101,10 @@ namespace husky {
 	T product(Iterator first, Iterator last, T init) { return std::accumulate(first, last, init, std::multiplies<T>()); }
 
 	template<typename Iterator>
-	bool and(Iterator first, Iterator last) { return std::accumulate(first, last, true, std::logical_and<bool>()); }
+	bool and_(Iterator first, Iterator last) { return std::accumulate(first, last, true, std::logical_and<bool>()); }
 
 	template<typename Iterator>
-	bool or(Iterator first, Iterator last) { return std::accumulate(first, last, false, std::logical_or<bool>()); }
+	bool or_(Iterator first, Iterator last) { return std::accumulate(first, last, false, std::logical_or<bool>()); }
 	*/
 
 	template <typename T, typename Cont, typename UnaryOperation>
