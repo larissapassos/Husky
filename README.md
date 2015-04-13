@@ -2,10 +2,10 @@
 
 Source: https://hackage.haskell.org/package/base-4.7.0.0/docs/Prelude.html
 
-(Larissa - wrapper class)
+(Larissa - wrapper class) - done
 List operations - our container should support them
-- (::) :: a -> [a] -> [a]
-- (++) :: [a] -> [a] -> [a]
+- (::) :: a -> [a] -> [a] - done
+- (++) :: [a] -> [a] -> [a] - done
 
 (Larissa)
 - head :: [a] -> a 
@@ -14,7 +14,7 @@ List operations - our container should support them
   - init :: [a] -> [a] 
   - null :: [a] -> Bool 
   - length :: [a] -> Int 
-  - (!!) :: [a] -> Int -> a 9 
+  - (!!) :: [a] -> Int -> a - done
   - reverse :: [a] -> [a]
  
 (Vinicius)
@@ -51,13 +51,13 @@ List operations - our container should support them
   - notElem :: Eq a => a -> [a] -> Bool infix 4 
 
 (Larissa)
-- zip :: [a] -> [b] -> [(a, b)] 
+- zip :: [a] -> [b] -> [(a, b)] - done
   - zip3 :: [a] -> [b] -> [c] -> [(a, b, c)] 
   - zipWith :: (a -> b -> c) -> [a] -> [b] -> [c] 
   - zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d] 
   - unzip :: [(a, b)] -> ([a], [b]) 
   - unzip3 :: [(a, b, c)] -> ([a], [b], [c])
-  - map :: (a -> b) -> [a] -> [b] 
+  - map :: (a -> b) -> [a] -> [b] - done
 
 (Vinicius)
 - lines :: String -> [String] 
@@ -66,7 +66,7 @@ List operations - our container should support them
   - unwords :: [String] -> String
 
 (Larissa - wrapper class)
-- << operator
+- << operator - done
 
 (Ayo)
 Functions
