@@ -6,6 +6,7 @@
 #include <iostream>
 #include <iterator>
 #include <numeric>
+#include <utility>
 #include <vector>
 
 namespace husky {
@@ -73,7 +74,7 @@ namespace husky {
 	};	
 
 	template<typename T, typename Cont>
-	std::ostream& operator<<(std::ostream& os, Hlist<T, Cont>& l) {
+	std::ostream& operator<<(std::ostream& os, const Hlist<T, Cont>& l) {
 		os << "[ ";
 		for (auto elm : l) {
 			os << elm << " ";
