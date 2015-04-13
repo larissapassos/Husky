@@ -23,7 +23,7 @@ namespace husky {
 		//friend auto begin(Hlist<T, Cont>& l) -> decltype(l.container.begin()) { return l.container.begin(); }
 		//friend auto end(Hlist<T, Cont>& l) -> decltype(l.container.end()) { return l.container.end(); }
 
-		int size() { return container.size(); }
+		int size() const { return container.size(); }
 
 		T operator[](int index) {
 			int i = 0;
@@ -38,7 +38,9 @@ namespace husky {
 			return elm;
 		}
 
-		//todo: const operator[]
+		const T operator[](int index) const {
+			return ((Hlist<T, Cont>&)*this)[index];
+		}
 
 		void add_head(T elm) {
 			auto it = container.begin();
@@ -54,7 +56,7 @@ namespace husky {
 
 		void remove_tail() { container.pop_back(); }
 
-		friend Hlist<T, Cont>& operator+= (Hlist<T, Cont>& l1, Hlist<T, Cont>& l2) {
+		friend Hlist<T, Cont>& operator+= (Hlist<T, Cont>& l1, const Hlist<T, Cont>& l2) {
 			for (int i = 0; i < l2.size(); ++i) {
 				l1.add_tail(l2[i]);
 			}
@@ -66,7 +68,7 @@ namespace husky {
 	};	
 
 	template<typename T, typename Cont>
-	std::ostream& operator<<(std::ostream& os, Hlist<T, Cont>& l) {
+	std::ostream& operator<<(std::ostream& os, const Hlist<T, Cont>& l) {
 		os << "[";
 		for (int i = 0; i < l.size(); ++i) {
 			if (i != (l.size() - 1)) {
@@ -81,7 +83,7 @@ namespace husky {
 	}
 
 	template <typename T, typename Cont>
-	Hlist<T, Cont> cons(T head, Hlist<T, Cont>& tail) {
+	Hlist<T, Cont> cons(T head, const Hlist<T, Cont>& tail) {
 		Hlist<T, Cont> newList{ head };
 		newList += tail;
 		return newList;
@@ -105,7 +107,7 @@ namespace husky {
 	*/
 
 	template <typename T, typename Cont, typename UnaryOperation>
-	Hlist<T, Cont> map(Hlist<T, Cont>& l, UnaryOperation f) {
+	Hlist<T, Cont> map(const Hlist<T, Cont>& l, UnaryOperation f) {
 		Hlist<T, Cont> l2;
 		for (int i = 0; i < l.size(); ++i) {
 			T new_elm = f(l[i]);
@@ -115,7 +117,7 @@ namespace husky {
 	}
 
 	template <typename T, typename V, typename Cont1, typename Cont2>
-	Hlist<std::pair<T,V>, std::vector<std::pair<T,V>>> zip(Hlist<T, Cont1>& l1, Hlist<V, Cont2>& l2) {
+	Hlist<std::pair<T,V>, std::vector<std::pair<T,V>>> zip(const Hlist<T, Cont1>& l1, const Hlist<V, Cont2>& l2) {
 		Hlist<std::pair<T, V>, std::vector<std::pair<T, V>>> result;
 		int len = std::min(l1.size(), l2.size());
 		for (int i = 0; i < len; ++i) {

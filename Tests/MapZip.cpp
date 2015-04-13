@@ -16,11 +16,12 @@ private:
 
 template<typename T, typename V, typename Cont>
 void printTuple(Hlist<pair<T, V>, Cont>& l) {
+	cout << "[";
 	for (int i = 0; i < l.size(); ++i) {
 		auto tpl = l[i];
-		cout << "(" << get<0>(tpl) << ", " << get<1>(tpl) << ") ";
+		cout << "(" << get<0>(tpl) << ", " << get<1>(tpl) << "),";
 	}
-	cout << "\n";
+	cout << "]\n";
 }
 
 int main() {
