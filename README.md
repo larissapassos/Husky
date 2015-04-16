@@ -52,7 +52,7 @@ List operations - our container should support them
   - elem :: Eq a => a -> [a] -> Bool infix 4 
   - notElem :: Eq a => a -> [a] -> Bool infix 4 
 
-(Larissa)
+(Larissa) - done
 - zip :: [a] -> [b] -> [(a, b)] - done
   - zip3 :: [a] -> [b] -> [c] -> [(a, b, c)] 
   - zipWith :: (a -> b -> c) -> [a] -> [b] -> [c] 

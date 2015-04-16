@@ -11,6 +11,7 @@
 #include <string>
 #include <type_traits>
 #include <utility>
+#include <tuple>
 #include <vector>
 
 namespace husky {
@@ -265,6 +266,88 @@ namespace husky {
 			++it2;
 		}
 		return result;
+	}
+
+	// zip3 - takes three containers and returns a list of triples, analogous to zip
+	template <typename Cont1, typename Cont2, typename Cont3>
+	std::vector<std::tuple<typename Cont1::value_type, typename Cont2::value_type, typename Cont3::value_type>> zip3(const Cont1& l1, const Cont2& l2, const Cont3& l3) {
+		std::vector<std::tuple<typename Cont1::value_type, typename Cont2::value_type, typename Cont3::value_type>> result;
+		int len = std::min(l1.size(), std::min(l2.size(), l3.size()));
+		auto it1 = l1.begin();
+		auto it2 = l2.begin();
+		auto it3 = l3.begin();
+		for (int i = 0; i < len; ++i) {
+			auto new_tpl = std::make_tuple(*it1, *it2, *it3);
+			result.push_back(new_tpl);
+			++it1;
+			++it2;
+			++it3;
+		}
+		return result;
+	}
+
+	// zipWith - generalises zip by zipping with the function given as the first argument, instead of a tupling function
+	template<typename Function, typename Cont1, typename Cont2>
+	std::vector<typename std::result_of<Function(typename Cont1::value_type, typename Cont2::value_type)>::type> zipWith(Function f, const Cont1& l1, const Cont2& l2) {
+		using V = typename std::result_of<Function(typename Cont1::value_type, typename Cont2::value_type)>::type;
+		std::vector<V> result;
+		int len = std::min(l1.size(), l2.size());
+		auto it1 = l1.begin();
+		auto it2 = l2.begin();
+		for (int i = 0; i < len; ++i) {
+			auto new_elm = f(*it1, *it2);
+			result.push_back(new_elm);
+			++it1;
+			++it2;
+		}
+		return result;
+	}
+
+	//zipWith3 - takes a function which combines three elements, as well as three lists and returns a list of their point-wise combination
+	template<typename Function, typename Cont1, typename Cont2, typename Cont3>
+	std::vector<typename std::result_of<Function(typename Cont1::value_type, typename Cont2::value_type, typename Cont3::value_type)>::type> zipWith3(Function f, const Cont1& l1, const Cont2& l2, const Cont3& l3) {
+		using V = typename std::result_of<Function(typename Cont1::value_type, typename Cont2::value_type, typename Cont3::value_type)>::type;
+		std::vector<V> result;
+		int len = std::min(l1.size(), std::min(l2.size(), l3.size()));
+		auto it1 = l1.begin();
+		auto it2 = l2.begin();
+		auto it3 = l3.begin();
+		for (int i = 0; i < len; ++i) {
+			auto new_elm = f(*it1, *it2, *it3);
+			result.push_back(new_elm);
+			++it1;
+			++it2;
+			++it3;
+		}
+		return result;
+	}
+
+	// unzip - transforms a list of pairs into a list of first components and a list of second components.
+	template<typename T, typename V>
+	std::pair<std::vector<T>, std::vector<V>> unzip(const std::vector<std::pair<T, V>>& l) {
+		std::vector<T> first;
+		std::vector<V> second;
+		for (auto tpl : l) {
+			first.push_back(std::get<0>(tpl));
+			second.push_back(std::get<1>(tpl));
+		}
+		auto p = make_pair(first, second);
+		return p;
+	}
+
+	// unzip3 - takes a list of triples and returns three lists
+	template<typename T, typename V, typename W>
+	std::tuple<std::vector<T>, std::vector<V>, std::vector<W>> unzip3(const std::vector<std::tuple<T, V, W>>& l) {
+		std::vector<T> first;
+		std::vector<V> second;
+		std::vector<W> third;
+		for (auto tpl : l) {
+			first.push_back(std::get<0>(tpl));
+			second.push_back(std::get<1>(tpl));
+			third.push_back(std::get<2>(tpl));
+		}
+		auto p = make_tuple(first, second, third);
+		return p;
 	}
 
 	// Breaks a string up into a list of strings at newline characters.
