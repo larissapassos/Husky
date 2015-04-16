@@ -2,19 +2,20 @@
 #define _HUSKY_H
 
 #include <algorithm>
+#include <cstring>
 #include <functional>
 #include <iostream>
 #include <iterator>
 #include <numeric>
+#include <sstream>
+#include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
-#include <string>
-#include <cstring>
-#include <sstream>
-#include <type_traits>
 
 namespace husky {
 
+	// concat - concatenates two containers and returns the result.
 	template<typename Cont>
 	Cont concat(const Cont& l1, const Cont& l2) {
 		Cont result{ l1 };
@@ -34,6 +35,7 @@ namespace husky {
 		return result;
 	}
 
+	// printCont - print a container
 	template<typename Cont>
 	void printCont(const Cont& l) {
 		std::cout << "[ ";
@@ -43,6 +45,7 @@ namespace husky {
 		std::cout << "]\n";
 	}
 
+	// cons - haskell list constructor, receives a head and a tail list, and returns a new list consisting of (head:tail)
 	template<typename Cont>
 	Cont cons(typename Cont::value_type head, const Cont& tail) {
 		Cont newList{ tail };
@@ -51,12 +54,15 @@ namespace husky {
 		return newList;
 	}
 
+	// head - receives a container and returns the first element
 	template<typename Cont>
 	typename Cont::value_type head(const Cont& l) { return l.front(); }
 
+	// last - receives a container and returns the last element
 	template<typename Cont>
 	typename Cont::value_type last(const Cont& l) { return l.back(); }
 
+	// tail - receives a container and returns the list except for the first element
 	template<typename Cont>
 	Cont tail(const Cont& l) {
 		Cont t{ l };
@@ -64,6 +70,7 @@ namespace husky {
 		return t;
 	}
 
+	// init - receives a container and returns the list except for the last element
 	template<typename Cont>
 	Cont init(const Cont& l) {
 		Cont t{ l };
@@ -71,9 +78,15 @@ namespace husky {
 		return t;
 	}
 
-	/*template<typename Cont>
-	bool is_null(const Cont& l) { return l.empty(); }*/
+	// is_null - receives a container and returns wether it is empty or not
+	template<typename Cont>
+	bool is_null(const Cont& l) { return l.empty(); }
 
+	// length - receives a container and returns its size
+	template<typename Cont>
+	unsigned int length(const Cont& l) { return l.size(); }
+
+	// at - receives a container and a index and return the element at this index
 	template<typename Cont> 
 	typename Cont::value_type at(const Cont& l, int index) {
 		int i = 0;
@@ -89,6 +102,7 @@ namespace husky {
 		return l.front();
 	}
 
+	// reverse - receives a container and returns a new container with the same elements in reverse order
 	template<typename Cont>
 	Cont reverse(const Cont& l) {
 		Cont result;
@@ -195,6 +209,7 @@ namespace husky {
 	// Note: All function names above end in _ dure to name conflict. I figured out that that happened on ayo's computer because he was using namespaces, whereas
 	// I wasn't when running my tests. Talk about function naming. (Vinicius)
 
+	// map - receives a container and a unary function and returns a new container with the result of the function applied to every original element
 	template <typename Cont, typename Function>
 	std::vector<typename std::result_of<Function(typename Cont::value_type)>::type> map(const Cont& l, Function f) {
 		using V = typename std::result_of<Function(typename Cont::value_type)>::type;
@@ -210,6 +225,7 @@ namespace husky {
 	template<typename Cont, typename Function>
 	auto concatMap(const Cont& container, Function f) -> decltype(map(container, f)) { return concat(map(container, f)); }
 
+	// zip - receives two containers and returns a vector of pairs formed by the containers' elements
 	template <typename Cont1, typename Cont2>
 	std::vector<std::pair<typename Cont1::value_type, typename Cont2::value_type>> zip(const Cont1& l1, const Cont2& l2) {
 		std::vector<std::pair<typename Cont1::value_type, typename Cont2::value_type>> result;
