@@ -11,6 +11,7 @@
 #include <string>
 #include <cstring>
 #include <sstream>
+#include <type_traits>
 
 namespace husky {
 
@@ -56,15 +57,15 @@ namespace husky {
 
 	template<typename Function, typename Iterator>
 	typename Iterator::value_type foldl1(Iterator first, Iterator last, Function f) {
-		typename Iterator::value_type init = *first;
-		std::advance(first, 1);
+	typename Iterator::value_type init = *first;
+	std::advance(first, 1);
 
-		while (first != last) {
-			init = f(init, *first);
-			std::advance(first, 1);
-		}
+	while (first != last) {
+	init = f(init, *first);
+	std::advance(first, 1);
+	}
 
-		return init;
+	return init;
 	}
 
 	template<typename Iterator, typename T>
@@ -146,9 +147,10 @@ namespace husky {
 	// Note: All function names above end in _ dure to name conflict. I figured out that that happened on ayo's computer because he was using namespaces, whereas
 	// I wasn't when running my tests. Talk about function naming. (Vinicius)
 
-	template <typename Cont, typename UnaryOperation>
-	Cont map(const Cont& l, UnaryOperation f) {
-		Cont l2;
+	template <typename Cont, typename Function>
+	std::vector<typename std::result_of<Function(typename Cont::value_type)>::type> map(const Cont& l, Function f) {
+		using V = typename std::result_of<Function(typename Cont::value_type)>::type;
+		std::vector<V> l2;
 		for (auto elm : l) {
 			auto new_elm = f(elm);
 			l2.push_back(new_elm);
@@ -158,15 +160,19 @@ namespace husky {
 
 	// Maps a given container with a given function and then concatenate the results
 	template<typename Cont, typename Function>
-	Cont concatMap(const Cont& container, Function f) { return concat(map(container, f)); }
+	auto concatMap(const Cont& container, Function f) -> decltype(map(container, f)) { return concat(map(container, f)); }
 
 	template <typename Cont1, typename Cont2>
 	std::vector<std::pair<typename Cont1::value_type, typename Cont2::value_type>> zip(const Cont1& l1, const Cont2& l2) {
 		std::vector<std::pair<typename Cont1::value_type, typename Cont2::value_type>> result;
 		int len = std::min(l1.size(), l2.size());
+		auto it1 = l1.begin();
+		auto it2 = l2.begin();
 		for (int i = 0; i < len; ++i) {
-			auto new_elm = std::make_pair(l1[i], l2[i]);
+			auto new_elm = std::make_pair(*it1, *it2);
 			result.push_back(new_elm);
+			++it1;
+			++it2;
 		}
 		return result;
 	}
@@ -180,7 +186,7 @@ namespace husky {
 		while (std::getline(ss, curr)) result.push_back(curr);
 
 		return result;
-		
+
 	}
 
 	// Inverse to lines function. Using vector only since lines returns a vector.
