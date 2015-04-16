@@ -283,6 +283,17 @@ namespace husky {
 	template<typename T, typename Cont, typename Predicate>
 	Cont filter(const Cont& data, Predicate good){
 
+
+
+ /*      	auto filteredData(data);
+                                                            
+  	 	using test = typename T::value_type;
+                                            
+  		filteredData.erase(remove_if(filteredData.begin(), filteredData.end(),
+  		[&](test &x) { return !good(x); }), filteredData.end());
+ */
+		  
+
 		auto filteredData(data);  	//Use copy constructor to copy data set
 
 		filteredData.erase(remove_if(filteredData.begin(), filteredData.end(),
@@ -290,6 +301,86 @@ namespace husky {
 
 		return filteredData;
 	}
+
+	
+	//Function take: take n, applied to a list xs, returns the prefix of xs of length n, 
+	//or xs itself if n > length xs:
+	template <typename Value, typename Container>
+	void take(Value v, const Container& c)
+	{
+		int x = 0;
+		std::cout << std::endl;
+		for(auto it = std::begin(c); it != std::end(c); ++it){
+ 
+        		if ( x < v) std::cout << *it;
+                	x++;
+		}
+	}
+ 
+ 
+	//Function takeWhile: applied to a predicate p and a list xs, 
+	//returns the longest prefix (possibly empty) of xs of elements that satisfy p:
+	template <typename Predicate, typename Container>
+	void takeWhile(Predicate good, const Container& c)
+	{
+		std::cout << "\n";
+		for(auto it = std::begin(c); it != std::end(c); ++it){
+ 
+    			if (good(*it)){
+				std::cout << *it;
+             		}else{
+                        	break;
+                	}
+	 	}
+	}
+
+	
+	//Function drop: drop n xs returns the suffix of xs after the first n elements,
+	//or [] if n > length xs:
+	template <typename Value, typename Container>
+	void drop(Value v, const Container& c)
+	{
+         	int x = 0;
+      		std::cout << std::endl;
+		for(auto it = std::begin(c); it != std::end(c); ++it){
+
+			if ( x >= v) std::cout << *it;
+                	x++;
+		}
+	}
+
+
+	
+	//Function dropWhile: dropWhile p xs returns the suffix remaining after takeWhile p xs:
+	template <typename Predicate, typename Container>
+	void dropWhile(Predicate good, const Container& c)
+	{
+	 	std::cout << "\n";
+	 	int x = 0;
+	 
+	 	for(auto it = std::begin(c); it != std::end(c); ++it){
+	 
+	        	if (!good(*it) || x==1){
+	                	std::cout << *it;
+	                        x = 1;
+	                }else{
+	                	if(x == 1) std::cout << *it;
+	          	}
+	 	}
+	 }
+	 
+
+	  
+	 //Function Composition  Haskel definition:  (.) :: (b -> c) -> (a -> b) -> a -> c 
+	 template<typename F, typename G>
+	 decltype(auto)compose(F&& f, G&& g)
+	 {
+	         return[=](auto x){return f(g(x)); };
+	 
+	 }
+	
+	
+
 }
 
 #endif /* _HUSKY_H */
