@@ -33,7 +33,7 @@ List operations - our container should support them
   - maximum :: Ord a => [a] -> a 
   - minimum :: Ord a => [a] -> a 
 
-(Larissa)
+(Larissa) - done
 - scanl :: (b -> a -> b) -> b -> [a] -> [b] 
   - scanl1 :: (a -> a -> a) -> [a] -> [a] 
   - scanr :: (a -> b -> b) -> b -> [a] -> [b] 

@@ -20,4 +20,12 @@ int main() {
 	auto v3 = scanl1(std::plus<int>(), v);
 	cout << "usando scanl1: ";
 	printCont(v3);
+
+	auto v4 = scanr(std::plus<int>(), 0, v);
+	cout << "usando scanr: ";
+	printCont(v4);
+
+	auto v5 = scanr1(std::plus<int>(), v);
+	cout << "usando scanr1: ";
+	printCont(v5);
 }

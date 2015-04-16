@@ -106,9 +106,8 @@ namespace husky {
 	template<typename Cont>
 	Cont reverse(const Cont& l) {
 		Cont result;
-		for (auto elm : l) {
-			auto it = result.begin();
-			result.insert(it, elm);
+		for (auto rit = l.crbegin(); rit != l.crend(); ++rit) {
+			result.push_back(*rit);
 		}
 		return result;
 	}
@@ -205,6 +204,35 @@ namespace husky {
 			std::advance(first, 1);
 		}
 		return result;
+	}
+
+	// scanr - right-to-left dual of scanl
+	template<typename Cont, typename T, typename Function>
+	std::vector<T> scanr(Function f, T init, const Cont& l) {
+		std::vector<T> result;
+		result.push_back(init);
+		for (auto rit = l.crbegin(); rit != l.crend(); ++rit) {
+			init = f(init, *rit);
+			result.push_back(init);
+		}
+		return reverse(result);
+	}
+
+	//scanr1 - a variant of scanr that has no starting value argument
+	template<typename Cont, typename Function>
+	std::vector<typename Cont::value_type> scanr1(Function f, const Cont& l) {
+		std::vector<typename Cont::value_type> result;
+		auto first = l.crbegin();
+		auto last = l.crend();
+		auto init = *first;
+		result.push_back(init);
+		std::advance(first, 1);
+		while (first != last) {
+			init = f(init, *first);
+			result.push_back(init);
+			std::advance(first, 1);
+		}
+		return reverse(result);
 	}
 
 	// map - receives a container and a unary function and returns a new container with the result of the function applied to every original element
