@@ -16,6 +16,20 @@ List operations - our container should support them
   - length :: [a] -> Int 
   - (!!) :: [a] -> Int -> a - done
   - reverse :: [a] -> [a]
+ 
+(Vinicius) - done
+- foldl :: (b -> a -> b) -> b -> [a] -> b 
+  - foldl1 :: (a -> a -> a) -> [a] -> a 
+  - and :: [Bool] -> Bool 
+  - or :: [Bool] -> Bool 
+  - any :: (a -> Bool) -> [a] -> Bool 
+  - all :: (a -> Bool) -> [a] -> Bool 
+  - sum :: Num a => [a] -> a 
+  - product :: Num a => [a] -> a 
+  - concat :: [[a]] -> [a] 
+  - concatMap :: (a -> [b]) -> [a] -> [b] 
+  - maximum :: Ord a => [a] -> a 
+  - minimum :: Ord a => [a] -> a 
 
 (Larissa)
 - scanl :: (b -> a -> b) -> b -> [a] -> [b] 
@@ -44,6 +58,12 @@ List operations - our container should support them
   - unzip :: [(a, b)] -> ([a], [b]) 
   - unzip3 :: [(a, b, c)] -> ([a], [b], [c])
   - map :: (a -> b) -> [a] -> [b] - done
+
+(Vinicius) - done
+- lines :: String -> [String] 
+  - words :: String -> [String] 
+  - unlines :: [String] -> String 
+  - unwords :: [String] -> String
 
 (Larissa - wrapper class)
 - << operator - done
