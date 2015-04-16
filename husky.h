@@ -155,7 +155,7 @@ namespace husky {
 
 		it first = container.begin();
 		it last = container.end();
-		it::value_type init = *first;
+		typename it::value_type init = *first;
 		std::advance(first, 1);
 
 		while (first != last) {
@@ -196,7 +196,7 @@ namespace husky {
 
 	// Returns the maximum value in a given container, using a user-defined comparison functinon
 	template<typename Cont, typename Comp>
-	typename Cont::iterator::value_type maximum_(const Cont& container) { return *(std::max_element(container.begin(), container.end(), comp)); }
+	typename Cont::iterator::value_type maximum_(const Cont& container, Comp comp) { return *(std::max_element(container.begin(), container.end(), comp)); }
 
 	// Returns the minimum value in a given container, using the default comparison operators
 	template<typename Cont>
@@ -204,7 +204,7 @@ namespace husky {
 
 	// Returns the minimum value in a given container, using the default comparison operators
 	template<typename Cont, typename Comp>
-	typename Cont::iterator::value_type minimum_(const Cont& container) { return *(std::min_element(container.begin(), container.end(), comp)); }
+	typename Cont::iterator::value_type minimum_(const Cont& container, Comp comp) { return *(std::min_element(container.begin(), container.end(), comp)); }
 
 	// Note: All function names above end in _ dure to name conflict. I figured out that that happened on ayo's computer because he was using namespaces, whereas
 	// I wasn't when running my tests. Talk about function naming. (Vinicius)
