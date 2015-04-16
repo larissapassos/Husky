@@ -7,14 +7,14 @@ List operations - our container should support them
 - (::) :: a -> [a] -> [a] - done
 - (++) :: [a] -> [a] -> [a] - done
 
-(Larissa)
+(Larissa) - done
 - head :: [a] -> a 
   - last :: [a] -> a 
   - tail :: [a] -> [a] 
   - init :: [a] -> [a] 
   - null :: [a] -> Bool 
   - length :: [a] -> Int 
-  - (!!) :: [a] -> Int -> a - done
+  - (!!) :: [a] -> Int -> a
   - reverse :: [a] -> [a]
  
 (Vinicius) - done

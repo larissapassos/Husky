@@ -43,12 +43,60 @@ namespace husky {
 		std::cout << "]\n";
 	}
 
-	template <typename T, typename Cont>
-	Cont cons(T head, const Cont& tail) {
+	template<typename Cont>
+	Cont cons(typename Cont::value_type head, const Cont& tail) {
 		Cont newList{ tail };
 		auto it = newList.begin();
 		newList.insert(it, head);
 		return newList;
+	}
+
+	template<typename Cont>
+	typename Cont::value_type head(const Cont& l) { return l.front(); }
+
+	template<typename Cont>
+	typename Cont::value_type last(const Cont& l) { return l.back(); }
+
+	template<typename Cont>
+	Cont tail(const Cont& l) {
+		Cont t{ l };
+		t.erase(t.begin());
+		return t;
+	}
+
+	template<typename Cont>
+	Cont init(const Cont& l) {
+		Cont t{ l };
+		t.pop_back();
+		return t;
+	}
+
+	/*template<typename Cont>
+	bool is_null(const Cont& l) { return l.empty(); }*/
+
+	template<typename Cont> 
+	typename Cont::value_type at(const Cont& l, int index) {
+		int i = 0;
+		if (static_cast<unsigned>(index) >= l.size()) {
+			return l.back();
+		}
+		for (auto elm : l) {
+			if (i == index) {
+				return elm;
+			}
+			++i;
+		}
+		return l.front();
+	}
+
+	template<typename Cont>
+	Cont reverse(const Cont& l) {
+		Cont result;
+		for (auto elm : l) {
+			auto it = result.begin();
+			result.insert(it, elm);
+		}
+		return result;
 	}
 
 	// Iterator versions of fold functions
