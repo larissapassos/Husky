@@ -33,7 +33,7 @@ int main() {
 	addx add42{ 42 };
 	genString gs;
 
-	cout << "hector: ";
+	cout << "vector: ";
 	printCont(v);
 
 	vector<int> v2 = map(v, add42);

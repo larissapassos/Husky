@@ -87,7 +87,7 @@ namespace husky {
 	unsigned int length(const Cont& l) { return l.size(); }
 
 	// at - receives a container and a index and return the element at this index
-	template<typename Cont> 
+	template<typename Cont>
 	typename Cont::value_type at(const Cont& l, int index) {
 		int i = 0;
 		if (static_cast<unsigned>(index) >= l.size()) {
@@ -112,37 +112,6 @@ namespace husky {
 		}
 		return result;
 	}
-
-	// Iterator versions of fold functions
-	/*template<typename Function, typename Iterator, typename T>
-	T foldl(Iterator first, Iterator last, T init, Function f) { return std::accumulate(first, last, init, f); }
-
-	template<typename Function, typename Iterator>
-	typename Iterator::value_type foldl1(Iterator first, Iterator last, Function f) {
-	typename Iterator::value_type init = *first;
-	std::advance(first, 1);
-
-	while (first != last) {
-	init = f(init, *first);
-	std::advance(first, 1);
-	}
-
-	return init;
-	}
-
-	template<typename Iterator, typename T>
-	T sum(Iterator first, Iterator last, T init) { return std::accumulate(first, last, init); }
-
-	template<typename Iterator, typename T>
-	T product(Iterator first, Iterator last, T init) { return std::accumulate(first, last, init, std::multiplies<T>()); }
-
-	template<typename Iterator>
-	bool and_(Iterator first, Iterator last) { return std::accumulate(first, last, true, std::logical_and<bool>()); }
-
-	template<typename Iterator>
-	bool or_(Iterator first, Iterator last) { return std::accumulate(first, last, false, std::logical_or<bool>()); }*/
-
-	// Container version of fold functions
 
 	// Returns a fold of the given container, with a given initial value and a given function
 	template<typename Function, typename Cont, typename T>
@@ -202,12 +171,41 @@ namespace husky {
 	template<typename Cont>
 	typename Cont::iterator::value_type minimum_(const Cont& container) { return *(std::min_element(container.begin(), container.end())); }
 
-	// Returns the minimum value in a given container, using the default comparison operators
+	// Returns the minimum value in a given container, using a user-defined comparison functinon
 	template<typename Cont, typename Comp>
 	typename Cont::iterator::value_type minimum_(const Cont& container, Comp comp) { return *(std::min_element(container.begin(), container.end(), comp)); }
 
 	// Note: All function names above end in _ dure to name conflict. I figured out that that happened on ayo's computer because he was using namespaces, whereas
 	// I wasn't when running my tests. Talk about function naming. (Vinicius)
+
+	// scanl - similar to foldl, but returns a vector of successive reduced values from the left
+	template<typename Cont, typename T, typename Function>
+	std::vector<T> scanl(Function f, T init, const Cont& l) {
+		std::vector<T> result;
+		result.push_back(init);
+		for (auto elm : l) {
+			init = f(init, elm);
+			result.push_back(init);
+		}
+		return result;
+	}
+
+	// scanl1 - a variant of scanl that has no starting value argument
+	template<typename Cont, typename Function>
+	std::vector<typename Cont::value_type> scanl1(Function f, const Cont& l) {
+		std::vector<typename Cont::value_type> result;
+		auto first = l.begin();
+		auto last = l.end();
+		auto init = *first;
+		result.push_back(init);
+		std::advance(first, 1);
+		while (first != last) {
+			init = f(init, *first);
+			result.push_back(init);
+			std::advance(first, 1);
+		}
+		return result;
+	}
 
 	// map - receives a container and a unary function and returns a new container with the result of the function applied to every original element
 	template <typename Cont, typename Function>
@@ -283,17 +281,6 @@ namespace husky {
 	template<typename T, typename Cont, typename Predicate>
 	Cont filter(const Cont& data, Predicate good){
 
-
-
- /*      	auto filteredData(data);
-                                                            
-  	 	using test = typename T::value_type;
-                                            
-  		filteredData.erase(remove_if(filteredData.begin(), filteredData.end(),
-  		[&](test &x) { return !good(x); }), filteredData.end());
- */
-		  
-
 		auto filteredData(data);  	//Use copy constructor to copy data set
 
 		filteredData.erase(remove_if(filteredData.begin(), filteredData.end(),
@@ -302,7 +289,7 @@ namespace husky {
 		return filteredData;
 	}
 
-	
+
 	//Function take: take n, applied to a list xs, returns the prefix of xs of length n, 
 	//or xs itself if n > length xs:
 	template <typename Value, typename Container>
@@ -310,76 +297,77 @@ namespace husky {
 	{
 		int x = 0;
 		std::cout << std::endl;
-		for(auto it = std::begin(c); it != std::end(c); ++it){
- 
-        		if ( x < v) std::cout << *it;
-                	x++;
+		for (auto it = std::begin(c); it != std::end(c); ++it){
+
+			if (x < v) std::cout << *it;
+			x++;
 		}
 	}
- 
- 
+
+
 	//Function takeWhile: applied to a predicate p and a list xs, 
 	//returns the longest prefix (possibly empty) of xs of elements that satisfy p:
 	template <typename Predicate, typename Container>
 	void takeWhile(Predicate good, const Container& c)
 	{
 		std::cout << "\n";
-		for(auto it = std::begin(c); it != std::end(c); ++it){
- 
-    			if (good(*it)){
+		for (auto it = std::begin(c); it != std::end(c); ++it){
+
+			if (good(*it)){
 				std::cout << *it;
-             		}else{
-                        	break;
-                	}
-	 	}
+			}
+			else{
+				break;
+			}
+		}
 	}
 
-	
+
 	//Function drop: drop n xs returns the suffix of xs after the first n elements,
 	//or [] if n > length xs:
 	template <typename Value, typename Container>
 	void drop(Value v, const Container& c)
 	{
-         	int x = 0;
-      		std::cout << std::endl;
-		for(auto it = std::begin(c); it != std::end(c); ++it){
+		int x = 0;
+		std::cout << std::endl;
+		for (auto it = std::begin(c); it != std::end(c); ++it){
 
-			if ( x >= v) std::cout << *it;
-                	x++;
+			if (x >= v) std::cout << *it;
+			x++;
 		}
 	}
 
 
-	
+
 	//Function dropWhile: dropWhile p xs returns the suffix remaining after takeWhile p xs:
 	template <typename Predicate, typename Container>
 	void dropWhile(Predicate good, const Container& c)
 	{
-	 	std::cout << "\n";
-	 	int x = 0;
-	 
-	 	for(auto it = std::begin(c); it != std::end(c); ++it){
-	 
-	        	if (!good(*it) || x==1){
-	                	std::cout << *it;
-	                        x = 1;
-	                }else{
-	                	if(x == 1) std::cout << *it;
-	          	}
-	 	}
-	 }
-	 
+		std::cout << "\n";
+		int x = 0;
 
-	  
-	 //Function Composition  Haskel definition:  (.) :: (b -> c) -> (a -> b) -> a -> c 
-	 template<typename F, typename G>
-	 decltype(auto)compose(F&& f, G&& g)
-	 {
-	         return[=](auto x){return f(g(x)); };
-	 
-	 }
-	
-	
+		for (auto it = std::begin(c); it != std::end(c); ++it){
+
+			if (!good(*it) || x == 1){
+				std::cout << *it;
+				x = 1;
+			}
+			else{
+				if (x == 1) std::cout << *it;
+			}
+		}
+	}
+
+
+
+	//Function Composition  Haskel definition:  (.) :: (b -> c) -> (a -> b) -> a -> c 
+	/*template<typename F, typename G>
+	decltype(auto)compose(F&& f, G&& g)
+	{
+		return[=](auto x){return f(g(x)); };
+
+	}*/
+
 
 }
 
