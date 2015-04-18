@@ -16,6 +16,10 @@
 
 namespace husky {
 
+	/* --------------------------------- */
+	/* List manipulation functions below */
+	/* --------------------------------- */
+
 	// concat - concatenates two containers and returns the result.
 	template<typename Cont>
 	Cont concat(const Cont& l1, const Cont& l2) {
@@ -32,7 +36,6 @@ namespace husky {
 	Cont concat(const Cont& l) {
 		Cont result{ l };
 		for (auto elm : l) result.push_back(elm);
-		//return concat(new Cont(), l);
 		return result;
 	}
 
@@ -113,70 +116,118 @@ namespace husky {
 		return result;
 	}
 
+	/* -------------------------------- */
+	/* Standard and Special Folds Below */
+	/* -------------------------------- */
+
 	// Returns a fold of the given container, with a given initial value and a given function
 	template<typename Function, typename Cont, typename T>
-	T foldl(const Cont& container, T init, Function f) { return std::accumulate(container.begin(), container.end(), init, f); }
+	T foldl(const Cont& container, T init, Function f) {
+		return std::accumulate(container.begin(), container.end(), init, f);
+	}
 
 	// Returns a fold of a given container with the given function with no initial values
 	template<typename Function, typename Cont>
-	typename Cont::iterator::value_type foldl1(Cont& container, Function f) {
-		using it = typename Cont::iterator;
-
-		it first = container.begin();
-		it last = container.end();
-		typename it::value_type init = *first;
+	typename Cont::value_type foldl1(const Cont& container, Function f) {
+		auto first = container.cbegin();
+		auto last = container.cend();
+		auto init = *first;
 		std::advance(first, 1);
 
-		while (first != last) {
-			init = f(init, *first);
-			std::advance(first, 1);
+		return std::accumulate(first, last, init, f);
+	}
+
+	// foldr, applied to a binary operator, a starting value (typically the right-identity of the operator), and a list, 
+	// reduces the list using the binary operator, from right to left:
+	template<typename Function, typename Cont, typename T>
+	T foldr(const Cont& container, T init, Function f) {
+		T init;
+
+		for (auto rit = container.crbegin(); rit != container.crend(); ++rit) {
+			init = f(init, *rit);
 		}
 
 		return init;
 	}
 
+	// foldr1 - a variant of foldr that has no starting value argument, and thus must be applied to non-empty lists.
+	template<typename Function, typename Cont>
+	typename Cont::value_type foldr1(const Cont& container, Function f) {
+		auto first = container.crbegin();
+		auto last = container.crend();
+		auto init = *first;
+		std::advance(first, 1);
+
+		return std::accumulate(first, last, init, f);
+	}
+
 	// Returns the summation of the values in the given container with the given initial value
 	template<typename Cont, typename T>
-	T sum(const Cont& container, T init) { return std::accumulate(container.begin(), container.end(), init); }
+	T sum(const Cont& container, T init) {
+		return std::accumulate(container.begin(), container.end(), init);
+	}
 
 	// Returns the product of the values in the given container with the given initial value
 	template<typename Cont, typename T>
-	T product(const Cont& container, T init) { return std::accumulate(container.begin(), container.end(), init, std::multiplies<T>()); }
+	T product(const Cont& container, T init) {
+		return std::accumulate(container.begin(), container.end(), init, std::multiplies<T>());
+	}
 
 	// Returns a logical and operation for every value in the given container
 	template<typename Cont>
-	bool and_(const Cont& container) { return std::accumulate(container.begin(), container.end(), true, std::logical_and<bool>()); }
+	bool and_(const Cont& container) {
+		return std::accumulate(container.begin(), container.end(), true, std::logical_and<bool>());
+	}
 
 	// Returns a logical or operation for every value in the given container
 	template<typename Cont>
-	bool or_(const Cont& container) { return std::accumulate(container.begin(), container.end(), false, std::logical_or<bool>()); }
+	bool or_(const Cont& container) {
+		return std::accumulate(container.begin(), container.end(), false, std::logical_or<bool>());
+	}
 
 	// Returns true if any value in the given container fits a given predicate
 	template<typename Cont, typename Pred>
-	bool any_(const Cont& container, Pred predicate) { return std::any_of(container.begin(), container.end(), predicate); }
+	bool any_(const Cont& container, Pred predicate) {
+		return std::any_of(container.begin(), container.end(), predicate);
+	}
 
 	// Returns true if all values in the given container fit a given predicate
 	template<typename Cont, typename Pred>
-	bool all_(const Cont& container, Pred predicate) { return std::all_of(container.begin(), container.end(), predicate); }
+	bool all_(const Cont& container, Pred predicate) {
+		return std::all_of(container.begin(), container.end(), predicate);
+	}
+
+	/* ------------------------------------ */
+	/* Maximum and mininmum functions below */
+	/* ------------------------------------ */
 
 	// Returns the maximum value in a given container, using the default comparison operators
 	template<typename Cont>
-	typename Cont::iterator::value_type maximum_(const Cont& container) { return *(std::max_element(container.begin(), container.end())); }
+	typename Cont::iterator::value_type maximum_(const Cont& container) {
+		return *(std::max_element(container.begin(), container.end()));
+	}
 
 	// Returns the maximum value in a given container, using a user-defined comparison functinon
 	template<typename Cont, typename Comp>
-	typename Cont::iterator::value_type maximum_(const Cont& container, Comp comp) { return *(std::max_element(container.begin(), container.end(), comp)); }
+	typename Cont::iterator::value_type maximum_(const Cont& container, Comp comp) {
+		return *(std::max_element(container.begin(), container.end(), comp));
+	}
 
 	// Returns the minimum value in a given container, using the default comparison operators
 	template<typename Cont>
-	typename Cont::iterator::value_type minimum_(const Cont& container) { return *(std::min_element(container.begin(), container.end())); }
+	typename Cont::iterator::value_type minimum_(const Cont& container) {
+		return *(std::min_element(container.begin(), container.end()));
+	}
 
 	// Returns the minimum value in a given container, using a user-defined comparison functinon
 	template<typename Cont, typename Comp>
-	typename Cont::iterator::value_type minimum_(const Cont& container, Comp comp) { return *(std::min_element(container.begin(), container.end(), comp)); }
+	typename Cont::iterator::value_type minimum_(const Cont& container, Comp comp) {
+		return *(std::min_element(container.begin(), container.end(), comp));
+	}
 
-	// Note: All function names above end in _ dure to name conflict. I figured out that that happened on ayo's computer because he was using namespaces, whereas
-	// I wasn't when running my tests. Talk about function naming. (Vinicius)
+	/* -------------------- */
+	/* Scan functions below */
+	/* -------------------- */
 
 	// scanl - similar to foldl, but returns a vector of successive reduced values from the left
 	template<typename Cont, typename T, typename Function>
@@ -236,6 +287,10 @@ namespace husky {
 		return reverse(result);
 	}
 
+	/* ---------- */
+	/* Maps below */
+	/* ---------- */
+
 	// map - receives a container and a unary function and returns a new container with the result of the function applied to every original element
 	template <typename Cont, typename Function>
 	std::vector<typename std::result_of<Function(typename Cont::value_type)>::type> map(const Cont& l, Function f) {
@@ -250,7 +305,13 @@ namespace husky {
 
 	// Maps a given container with a given function and then concatenate the results
 	template<typename Cont, typename Function>
-	auto concatMap(const Cont& container, Function f) -> decltype(map(container, f)) { return concat(map(container, f)); }
+	auto concatMap(const Cont& container, Function f) -> decltype(map(container, f)) {
+		return concat(map(container, f));
+	}
+
+	/* ------------------- */
+	/* Zip functions below */
+	/* ------------------- */
 
 	// zip - receives two containers and returns a vector of pairs formed by the containers' elements
 	template <typename Cont1, typename Cont2>
@@ -331,7 +392,7 @@ namespace husky {
 			first.push_back(std::get<0>(tpl));
 			second.push_back(std::get<1>(tpl));
 		}
-		auto p = make_pair(first, second);
+		auto p = std::make_pair(first, second);
 		return p;
 	}
 
@@ -346,11 +407,16 @@ namespace husky {
 			second.push_back(std::get<1>(tpl));
 			third.push_back(std::get<2>(tpl));
 		}
-		auto p = make_tuple(first, second, third);
+		auto p = std::make_tuple(first, second, third);
 		return p;
 	}
 
-	// Breaks a string up into a list of strings at newline characters.
+	/* ----------------------------------- */
+	/* String manipulation functions below */
+	/* ----------------------------------- */
+
+	// lines - breaks a string up into a list of strings at newline characters. The resulting strings do not contain newlines.
+	// Returning a vector of strings.
 	std::vector<std::string> lines(const std::string& str) {
 		std::vector<std::string> result;
 		std::stringstream ss(str);
@@ -362,14 +428,16 @@ namespace husky {
 
 	}
 
-	// Inverse to lines function. Using vector only since lines returns a vector.
+	// unlines - an inverse operation to lines. It joins lines, after appending a terminating newline to each.
+	// Returns a single string.
 	std::string unlines(const std::vector<std::string>& vec) {
 		std::string result;
 		for (auto elm : vec) result.append(elm + '\n');
 		return result;
 	}
 
-	// Breaks a string up into a list of strings at whitespaces.
+	// words - breaks a string up into a list of words, which were delimited by white space.
+	// Returns a vector of strings.
 	std::vector<std::string> words(const std::string& str) {
 		std::vector<std::string> result;
 		std::stringstream ss(str);
@@ -381,12 +449,18 @@ namespace husky {
 
 	}
 
-	// Inverse to words function. Using vector only since words returns a vector.
+	// unwords - an inverse operation to words. It joins words with separating spaces.
+	// Returns a single string.
 	std::string unwords(const std::vector<std::string>& vec) {
 		std::string result;
 		for (auto elm : vec) result.append(elm + ' ');
 		return result;
 	}
+
+
+	/* --------------------------------------------- */
+	/* List searching and sublisting functions below */
+	/* --------------------------------------------- */
 
 	//filter function returns a list with filtered data
 	template<typename T, typename Cont, typename Predicate>
@@ -410,7 +484,7 @@ namespace husky {
 		std::cout << std::endl;
 		for (auto it = std::begin(c); it != std::end(c); ++it){
 
-			if (x < v) std::cout << *it;
+			if (x < v) std::cout << *it; // Why only printing? Needs to return a container.
 			x++;
 		}
 	}
@@ -425,7 +499,7 @@ namespace husky {
 		for (auto it = std::begin(c); it != std::end(c); ++it){
 
 			if (good(*it)){
-				std::cout << *it;
+				std::cout << *it; // Why only printing? Needs to return a container.
 			}
 			else{
 				break;
@@ -443,12 +517,10 @@ namespace husky {
 		std::cout << std::endl;
 		for (auto it = std::begin(c); it != std::end(c); ++it){
 
-			if (x >= v) std::cout << *it;
+			if (x >= v) std::cout << *it; // Why only printing? Needs to return a container.
 			x++;
 		}
 	}
-
-
 
 	//Function dropWhile: dropWhile p xs returns the suffix remaining after takeWhile p xs:
 	template <typename Predicate, typename Container>
@@ -460,7 +532,7 @@ namespace husky {
 		for (auto it = std::begin(c); it != std::end(c); ++it){
 
 			if (!good(*it) || x == 1){
-				std::cout << *it;
+				std::cout << *it; // Why only printing? Needs to return a container.
 				x = 1;
 			}
 			else{
@@ -470,12 +542,59 @@ namespace husky {
 	}
 
 
+	// elem is the list membership predicate. Returns true if an element equal to x was found at the given container.
+	template<typename Cont, typename T>
+	bool elem(const T& val, const Cont& container) {
+		return (std::find(container.begin(), container.end(), val) != container.end());
+	}
+
+	// notElem is the negation of elem.
+	template<typename Cont, typename T>
+	bool notElem(const T& val, const Cont& container) {
+		return !(std::find(container.begin(), container.end(), val) != container.end());
+	}
+
+
+	/* ============================================================================================================================== */
+	/* Warning: take/takeWhile and drop/dropWhile must be fixed in order for the following functions (span, break & splitAt) to work. */
+	/* ============================================================================================================================== */
+/*
+	// span, applied to a predicate p and a container, returns a pair where first element is longest prefix 
+	// (possibly empty) of container of elements that satisfy p and second element is the remainder of the list.
+	// span p container is equivalent to (takeWhile p container, dropWhile p container).
+	template<typename Predicate, typename Cont>
+	std::pair<Cont, Cont> span(Predicate p, const Cont& container) {
+		std::pair<typename Cont::value_type, typename Cont::value_type> result;
+		result = std::make_pair(takeWhile(p, container), dropWhile(p, container));
+		return result;
+	}
+
+	// break_, applied to a predicate p and a container, returns a tuple where first element is longest prefix 
+	// (possibly empty) of container of elements that do not satisfy p and second element is the remainder of the list.
+	// break_ p is equivalent to span (not(p)).
+	template<typename Predicate, typename Cont>
+	std::pair<Cont, Cont> break_(Predicate p, const Cont& container) {
+		return span(std::not1(p), container);
+	}
+
+	// splitAtreturns a pair where first element is container prefix of length n and second element is the remainder of the list.
+	// It is equivalent to (take n container, drop n container).
+	template<typename Predicate, typename Cont>
+	std::pair<Cont, Cont> splitAt(int n, Predicate p, const Cont& container) {
+		std::pair<typename Cont::value_type, typename Cont::value_type> result;
+		result = std::make_pair(take(n, container), drop(n, container));
+	}
+*/
+	
+	/* ------ */
+	/* C++ 14 */
+	/* ------ */
 
 	//Function Composition  Haskel definition:  (.) :: (b -> c) -> (a -> b) -> a -> c 
 	/*template<typename F, typename G>
 	decltype(auto)compose(F&& f, G&& g)
 	{
-		return[=](auto x){return f(g(x)); };
+	return[=](auto x){return f(g(x)); };
 
 	}*/
 
