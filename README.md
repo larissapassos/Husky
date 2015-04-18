@@ -45,7 +45,7 @@ List operations - our container should support them
   - takeWhile :: (a -> Bool) -> [a] -> [a] 
   - dropWhile :: (a -> Bool) -> [a] -> [a]
 
-(Vinicius)
+(Vinicius) - done
   - splitAt :: Int -> [a] -> ([a], [a])
   - span :: (a -> Bool) -> [a] -> ([a], [a]) 
   - break :: (a -> Bool) -> [a] -> ([a], [a]) 
