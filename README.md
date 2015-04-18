@@ -1,4 +1,4 @@
-# FunctionalLibrary
+# Husky - A C++ Functional Library
 
 Source: https://hackage.haskell.org/package/base-4.7.0.0/docs/Prelude.html
 https://gist.github.com/ivan-cukic/6269914#file-curry-h
