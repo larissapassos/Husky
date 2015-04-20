@@ -1,4 +1,4 @@
-# FunctionalLibrary
+# Husky - A C++ Functional Library
 
 Source: https://hackage.haskell.org/package/base-4.7.0.0/docs/Prelude.html
 https://gist.github.com/ivan-cukic/6269914#file-curry-h
@@ -45,7 +45,7 @@ List operations - our container should support them
   - takeWhile :: (a -> Bool) -> [a] -> [a] 
   - dropWhile :: (a -> Bool) -> [a] -> [a]
 
-(Vinicius)
+(Vinicius) - done
   - splitAt :: Int -> [a] -> ([a], [a])
   - span :: (a -> Bool) -> [a] -> ([a], [a]) 
   - break :: (a -> Bool) -> [a] -> ([a], [a]) 
