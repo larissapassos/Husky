@@ -4,14 +4,13 @@
 #include <algorithm>
 #include <cstring>
 #include <functional>
-#include <iostream>
 #include <iterator>
 #include <numeric>
 #include <sstream>
 #include <string>
+#include <tuple>
 #include <type_traits>
 #include <utility>
-#include <tuple>
 #include <vector>
 
 namespace husky {
@@ -161,67 +160,67 @@ namespace husky {
 		return std::accumulate(first, last, init, f);
 	}
 
-	// Returns the summation of the values in the given container with the given initial value
+	// sum - returns the summation of the values in the given container with the given initial value
 	template<typename Cont, typename T>
 	T sum(const Cont& container, T init) {
 		return std::accumulate(container.begin(), container.end(), init);
 	}
 
-	// Returns the product of the values in the given container with the given initial value
+	// product - eturns the product of the values in the given container with the given initial value
 	template<typename Cont, typename T>
 	T product(const Cont& container, T init) {
 		return std::accumulate(container.begin(), container.end(), init, std::multiplies<T>());
 	}
 
-	// Returns a logical and operation for every value in the given container
+	// and_fold - returns a logical and operation for every value in the given container
 	template<typename Cont>
-	bool and_(const Cont& container) {
+	bool and_fold(const Cont& container) {
 		return std::accumulate(container.begin(), container.end(), true, std::logical_and<bool>());
 	}
 
-	// Returns a logical or operation for every value in the given container
+	// or_fold - returns a logical or operation for every value in the given container
 	template<typename Cont>
-	bool or_(const Cont& container) {
+	bool or_fold(const Cont& container) {
 		return std::accumulate(container.begin(), container.end(), false, std::logical_or<bool>());
 	}
 
-	// Returns true if any value in the given container fits a given predicate
+	// any_fold - returns true if any value in the given container fits a given predicate
 	template<typename Cont, typename Pred>
-	bool any_(const Cont& container, Pred predicate) {
+	bool any_fold(const Cont& container, Pred predicate) {
 		return std::any_of(container.begin(), container.end(), predicate);
 	}
 
-	// Returns true if all values in the given container fit a given predicate
+	// all_fold - returns true if all values in the given container fit a given predicate
 	template<typename Cont, typename Pred>
-	bool all_(const Cont& container, Pred predicate) {
+	bool all_fold(const Cont& container, Pred predicate) {
 		return std::all_of(container.begin(), container.end(), predicate);
 	}
 
 	/* ------------------------------------ */
-	/* Maximum and mininmum functions below */
+	/* Maximum and minimum functions below */
 	/* ------------------------------------ */
 
-	// Returns the maximum value in a given container, using the default comparison operators
+	// maximum_of - returns the maximum value in a given container, using the default comparison operators
 	template<typename Cont>
-	typename Cont::iterator::value_type maximum_(const Cont& container) {
+	typename Cont::iterator::value_type maximum_of(const Cont& container) {
 		return *(std::max_element(container.begin(), container.end()));
 	}
 
-	// Returns the maximum value in a given container, using a user-defined comparison functinon
+	// maximum_of - returns the maximum value in a given container, using a user-defined comparison functinon
 	template<typename Cont, typename Comp>
-	typename Cont::iterator::value_type maximum_(const Cont& container, Comp comp) {
+	typename Cont::iterator::value_type maximum_of(const Cont& container, Comp comp) {
 		return *(std::max_element(container.begin(), container.end(), comp));
 	}
 
-	// Returns the minimum value in a given container, using the default comparison operators
+	// minimum_of - returns the minimum value in a given container, using the default comparison operators
 	template<typename Cont>
-	typename Cont::iterator::value_type minimum_(const Cont& container) {
+	typename Cont::iterator::value_type minimum_of(const Cont& container) {
 		return *(std::min_element(container.begin(), container.end()));
 	}
 
-	// Returns the minimum value in a given container, using a user-defined comparison functinon
+	// minimum_of - eturns the minimum value in a given container, using a user-defined comparison functinon
 	template<typename Cont, typename Comp>
-	typename Cont::iterator::value_type minimum_(const Cont& container, Comp comp) {
+	typename Cont::iterator::value_type minimum_of(const Cont& container, Comp comp) {
 		return *(std::min_element(container.begin(), container.end(), comp));
 	}
 
@@ -303,7 +302,7 @@ namespace husky {
 		return l2;
 	}
 
-	// Maps a given container with a given function and then concatenate the results
+	// concatMap - maps a given container with a given function and then concatenate the results
 	template<typename Cont, typename Function>
 	auto concatMap(const Cont& container, Function f) -> decltype(map(container, f)) {
 		return concat(map(container, f));
@@ -416,7 +415,7 @@ namespace husky {
 	/* ----------------------------------- */
 
 	// lines - breaks a string up into a list of strings at newline characters. The resulting strings do not contain newlines.
-	// Returning a vector of strings.
+	// Returns a vector of strings.
 	std::vector<std::string> lines(const std::string& str) {
 		std::vector<std::string> result;
 		std::stringstream ss(str);
@@ -462,130 +461,132 @@ namespace husky {
 	/* List searching and sublisting functions below */
 	/* --------------------------------------------- */
 
-	//filter function returns a list with filtered data
-	template<typename T, typename Cont, typename Predicate>
+	//filter - returns a list with data filtered by a given predicate
+	template<typename Cont, typename Predicate>
 	Cont filter(const Cont& data, Predicate good){
 
 		auto filteredData(data);  	//Use copy constructor to copy data set
 
 		filteredData.erase(remove_if(filteredData.begin(), filteredData.end(),
-			[&](typename T::value_type &x) { return !good(x); }), filteredData.end());
+			[&](typename Cont::value_type &x) { return !good(x); }), filteredData.end());
 
 		return filteredData;
 	}
 
 
-	//Function take: take n, applied to a list xs, returns the prefix of xs of length n, 
-	//or xs itself if n > length xs:
-	template <typename Value, typename Container>
-	void take(Value v, const Container& c)
-	{
-		int x = 0;
-		std::cout << std::endl;
-		for (auto it = std::begin(c); it != std::end(c); ++it){
+	//Function take: take v, applied to a list c, returns the prefix of c of length v, 
+	//or c itself if v > length c:
+	template <typename Value, typename Cont>
+	std::vector<typename Cont::value_type> take(Value v, const Cont& c) {
+		std::vector<typename Cont::value_type> prefix;
 
-			if (x < v) std::cout << *it; // Why only printing? Needs to return a container.
-			x++;
+		if ((unsigned)v > c.size()) v = c.size();
+
+		for (auto it = std::begin(c); it != std::begin(c) + v; ++it) {
+			prefix.push_back(*it);
 		}
+
+		return prefix;
 	}
 
 
-	//Function takeWhile: applied to a predicate p and a list xs, 
-	//returns the longest prefix (possibly empty) of xs of elements that satisfy p:
-	template <typename Predicate, typename Container>
-	void takeWhile(Predicate good, const Container& c)
-	{
-		std::cout << "\n";
-		for (auto it = std::begin(c); it != std::end(c); ++it){
+	//Function takeWhile: applied to a predicate p and a list c, 
+	//returns the longest prefix (possibly empty) of c of elements that satisfy good:
+	template <typename Predicate, typename Cont>
+	std::vector<typename Cont::value_type> takeWhile(Predicate good, const Cont& c) {
+		std::vector<typename Cont::value_type> prefix;
 
-			if (good(*it)){
-				std::cout << *it; // Why only printing? Needs to return a container.
-			}
-			else{
-				break;
-			}
+		for (auto it = std::begin(c); it != std::end(c); ++it) {
+			if (good(*it)) prefix.push_back(*it);
+			else break;
 		}
+
+		return prefix;
 	}
 
 
-	//Function drop: drop n xs returns the suffix of xs after the first n elements,
-	//or [] if n > length xs:
-	template <typename Value, typename Container>
-	void drop(Value v, const Container& c)
-	{
-		int x = 0;
-		std::cout << std::endl;
-		for (auto it = std::begin(c); it != std::end(c); ++it){
+	//Function drop: drop v c returns the suffix of c after the first v elements,
+	//or [] if v > length c:
+	template <typename Value, typename Cont>
+	std::vector<typename Cont::value_type> drop(Value v, const Cont& c) {
+		std::vector<typename Cont::value_type> suffix;
 
-			if (x >= v) std::cout << *it; // Why only printing? Needs to return a container.
-			x++;
+		if ((unsigned)v > c.size()) return suffix;
+
+		for (auto it = std::begin(c) + v; it != std::end(c); ++it) {
+			suffix.push_back(*it);
 		}
+
+		return suffix;
 	}
 
-	//Function dropWhile: dropWhile p xs returns the suffix remaining after takeWhile p xs:
-	template <typename Predicate, typename Container>
-	void dropWhile(Predicate good, const Container& c)
-	{
-		std::cout << "\n";
-		int x = 0;
+	//Function dropWhile: dropWhile bad c returns the suffix remaining after takeWhile bad c:
+	template <typename Predicate, typename Cont>
+	std::vector<typename Cont::value_type> dropWhile(Predicate bad, const Cont& c) {
+		std::vector<typename Cont::value_type> suffix;
 
-		for (auto it = std::begin(c); it != std::end(c); ++it){
+		bool keep_dropping = true;
 
-			if (!good(*it) || x == 1){
-				std::cout << *it; // Why only printing? Needs to return a container.
-				x = 1;
-			}
-			else{
-				if (x == 1) std::cout << *it;
+		for (auto it = std::begin(c); it != std::end(c); ++it) {
+			if (!bad(*it) || !keep_dropping) {
+				suffix.push_back(*it);
+				keep_dropping = false;
 			}
 		}
+
+		return suffix;
 	}
 
 
-	// elem is the list membership predicate. Returns true if an element equal to x was found at the given container.
+	// elem - the list membership predicate. Returns true if an element equal to x was found at the given container.
 	template<typename Cont, typename T>
 	bool elem(const T& val, const Cont& container) {
 		return (std::find(container.begin(), container.end(), val) != container.end());
 	}
 
-	// notElem is the negation of elem.
+	// notElem - the negation of elem.
 	template<typename Cont, typename T>
 	bool notElem(const T& val, const Cont& container) {
 		return !(std::find(container.begin(), container.end(), val) != container.end());
 	}
 
 
-	/* ============================================================================================================================== */
-	/* Warning: take/takeWhile and drop/dropWhile must be fixed in order for the following functions (span, break & splitAt) to work. */
-	/* ============================================================================================================================== */
-/*
-	// span, applied to a predicate p and a container, returns a pair where first element is longest prefix 
+	// span, applied to a predicate p and a container, returns a pair where first element is longest prefix
 	// (possibly empty) of container of elements that satisfy p and second element is the remainder of the list.
 	// span p container is equivalent to (takeWhile p container, dropWhile p container).
 	template<typename Predicate, typename Cont>
-	std::pair<Cont, Cont> span(Predicate p, const Cont& container) {
-		std::pair<typename Cont::value_type, typename Cont::value_type> result;
+	std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> span_container(Predicate p, const Cont& container) {
+		std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> result;
+
 		result = std::make_pair(takeWhile(p, container), dropWhile(p, container));
+
 		return result;
 	}
 
-	// break_, applied to a predicate p and a container, returns a tuple where first element is longest prefix 
+	// break_, applied to a predicate p and a container, returns a tuple where first element is longest prefix
 	// (possibly empty) of container of elements that do not satisfy p and second element is the remainder of the list.
 	// break_ p is equivalent to span (not(p)).
 	template<typename Predicate, typename Cont>
-	std::pair<Cont, Cont> break_(Predicate p, const Cont& container) {
-		return span(std::not1(p), container);
+	std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> break_container(Predicate p, const Cont& container) {
+		std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> result;
+
+		auto notP = [&](typename const Cont::value_type &x) { return !p(x); };
+
+		result = std::make_pair(takeWhile(notP, container), dropWhile(notP, container));
+		return result;
 	}
 
-	// splitAtreturns a pair where first element is container prefix of length n and second element is the remainder of the list.
+	// splitAt - returns a pair where first element is container prefix of length n and second element is the remainder of the list.
 	// It is equivalent to (take n container, drop n container).
-	template<typename Predicate, typename Cont>
-	std::pair<Cont, Cont> splitAt(int n, Predicate p, const Cont& container) {
-		std::pair<typename Cont::value_type, typename Cont::value_type> result;
+	template<typename Cont>
+	std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> splitAt(int n, const Cont& container) {
+		std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> result;
+
 		result = std::make_pair(take(n, container), drop(n, container));
+
+		return result;
 	}
-*/
-	
+
 	/* ------ */
 	/* C++ 14 */
 	/* ------ */
@@ -597,7 +598,6 @@ namespace husky {
 	return[=](auto x){return f(g(x)); };
 
 	}*/
-
 
 }
 
