@@ -36,10 +36,6 @@ main = do
 	let l1 = map rInt (lines ints)
 	let l2 = lines strings
 	let l3 = readRecords (map words (lines recs)) []
-	-- force evaluation of the lists
-	PutStrLn show $ length $ l1
-	PutStrLn show $ length $ l2
-	PutStrLn show $ length $ l3
 
 	-- timing functions
 	let hint = 0

@@ -63,10 +63,11 @@ def main():
 	readFile(recFile, l3)
 
 	with open("ints-times.txt", "w") as fints, open("strings-times.txt", "w") as fstrings, open("records-times.txt", "w") as frecs:
-		#testing functions
+		# timing functions
 		l4 = constructIntList(l3)
 		l5 = constructStringList(l3)
 		l6 = constructRecList(l1,l2)
+		# call measureTime with the output file, the label of the function, the function and its arguments
 		measureTime(fints, "concat", concat, l1, l4)
 		measureTime(fstrings, "concat", concat, l2, l5)
 		measureTime(frecs, "concat", concat, l3, l6)
