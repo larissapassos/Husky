@@ -1,0 +1,2 @@
+cons: 13ms
+concat2: 37ms

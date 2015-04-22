@@ -10,7 +10,7 @@ using namespace std;
 using namespace chrono;
 
 // Store the strings in the static area to avoid allocating heap space
-const static size_t N = 100;
+const static size_t N = 100000;
 
 // Class that encapsulates a pseudo-random generator
 class Rand_Int {
@@ -30,7 +30,7 @@ struct Record {
 
 // Print records
 ostream& operator<<(ostream& os, const Record& r) {
-	return os << r.num << '-' << r.str;
+	return os << r.num << ' ' << r.str;
 }
 
 // Print vectors
