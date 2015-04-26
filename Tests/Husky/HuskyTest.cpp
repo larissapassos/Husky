@@ -532,6 +532,224 @@ int main() {
 	timespan = duration_cast<milliseconds>(tend - tstart).count();
 	outRecs << label << ": " << timespan << "ms\n";
 
+	// lines
+	label = "lines";
+	string s{ "a\nb\nc\nd\n" };
+
+	tstart = high_resolution_clock::now();
+	lines(s);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outStrings << label << ": " << timespan << "ms\n";
+
+	// unlines
+	label = "unlines";
+
+	tstart = high_resolution_clock::now();
+	unlines(v2);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outStrings << label << ": " << timespan << "ms\n";
+
+	// words
+	label = "words";
+	string s1{ "a b c d" };
+
+	tstart = high_resolution_clock::now();
+	auto v16 = words(s1);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outStrings << label << ": " << timespan << "ms\n";
+
+	// unwords
+	label = "unwords";
+
+	tstart = high_resolution_clock::now();
+	unwords(v16);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outStrings << label << ": " << timespan << "ms\n";
+
+	// filter
+	label = "filter";
+	auto evens = [](int x) { return x % 2 == 0; };
+	auto evenLength = [](string s) { return s.length() % 2 == 0; };
+	auto evenAndLength = [evens, evenLength](Record r) { return evens(r.num) && evenLength(r.str); };
+
+	tstart = high_resolution_clock::now();
+	filter(v1, evens);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outInts << label << ": " << timespan << "ms\n";
+
+	tstart = high_resolution_clock::now();
+	filter(v2, evenLength);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outStrings << label << ": " << timespan << "ms\n";
+
+	tstart = high_resolution_clock::now();
+	filter(v3, evenAndLength);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outRecs << label << ": " << timespan << "ms\n";
+
+	// take
+	label = "take";
+
+	tstart = high_resolution_clock::now();
+	take(10000, v1);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outInts << label << ": " << timespan << "ms\n";
+
+	tstart = high_resolution_clock::now();
+	take(10000, v2);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outStrings << label << ": " << timespan << "ms\n";
+
+	tstart = high_resolution_clock::now();
+	take(10000, v3);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outRecs << label << ": " << timespan << "ms\n";
+
+	// takeWhile
+	label = "takeWhile";
+	auto trueNumber = [](int x) { return true; };
+	auto trueString = [](string s) { return true; };
+	auto trueRecord = [](Record r) { return true; };
+
+	tstart = high_resolution_clock::now();
+	takeWhile(trueNumber, v1);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outInts << label << ": " << timespan << "ms\n";
+
+	tstart = high_resolution_clock::now();
+	takeWhile(trueString, v2);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outStrings << label << ": " << timespan << "ms\n";
+
+	tstart = high_resolution_clock::now();
+	takeWhile(trueRecord, v3);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outRecs << label << ": " << timespan << "ms\n";
+
+	// drop
+	label = "drop";
+
+	tstart = high_resolution_clock::now();
+	drop(10000, v1);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outInts << label << ": " << timespan << "ms\n";
+
+	tstart = high_resolution_clock::now();
+	drop(10000, v2);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outStrings << label << ": " << timespan << "ms\n";
+
+	tstart = high_resolution_clock::now();
+	drop(10000, v3);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outRecs << label << ": " << timespan << "ms\n";
+
+	// dropWhile
+	label = "dropWhile";
+	auto falseNumber = [](int x) { return false; };
+	auto falseString = [](string s) { return false; };
+	auto falseRecord = [](Record r) { return false; };
+
+	tstart = high_resolution_clock::now();
+	dropWhile(falseNumber, v1);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outInts << label << ": " << timespan << "ms\n";
+
+	tstart = high_resolution_clock::now();
+	dropWhile(falseString, v2);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outStrings << label << ": " << timespan << "ms\n";
+
+	tstart = high_resolution_clock::now();
+	dropWhile(falseRecord, v3);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outRecs << label << ": " << timespan << "ms\n";
+
+	// span_container
+	label = "span_container";
+	auto bigNumber = [](int x) { return x > 1000000; };
+	auto bigString = [](string s) { return s.length() > 25; };
+	auto bigRecord = [bigNumber, bigString](Record r) { return bigNumber(r.num) && bigString(r.str); };
+
+	tstart = high_resolution_clock::now();
+	span_container(bigNumber, v1);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outInts << label << ": " << timespan << "ms\n";
+
+	tstart = high_resolution_clock::now();
+	span_container(bigString, v2);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outStrings << label << ": " << timespan << "ms\n";
+
+	tstart = high_resolution_clock::now();
+	span_container(bigRecord, v3);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outRecs << label << ": " << timespan << "ms\n";
+
+	// break_container
+	label = "break_container";
+
+	tstart = high_resolution_clock::now();
+	break_container(bigNumber, v1);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outInts << label << ": " << timespan << "ms\n";
+
+	tstart = high_resolution_clock::now();
+	break_container(bigString, v2);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outStrings << label << ": " << timespan << "ms\n";
+
+	tstart = high_resolution_clock::now();
+	break_container(bigRecord, v3);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outRecs << label << ": " << timespan << "ms\n";
+
+	// splitAt
+	label = "splitAt";
+
+	tstart = high_resolution_clock::now();
+	splitAt(v1.size() / 2, v1);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outInts << label << ": " << timespan << "ms\n";
+
+	tstart = high_resolution_clock::now();
+	splitAt(v2.size() / 2, v2);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outStrings << label << ": " << timespan << "ms\n";
+
+	tstart = high_resolution_clock::now();
+	splitAt(v3.size() / 2, v3);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outRecs << label << ": " << timespan << "ms\n";
+
 	outInts.close();
 	outStrings.close();
 	outRecs.close();

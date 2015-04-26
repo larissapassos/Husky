@@ -140,7 +140,6 @@ namespace husky {
 	// reduces the list using the binary operator, from right to left:
 	template<typename Function, typename Cont, typename T>
 	T foldr(const Cont& container, T init, Function f) {
-		T init;
 
 		for (auto rit = container.crbegin(); rit != container.crend(); ++rit) {
 			init = f(init, *rit);
@@ -551,9 +550,9 @@ namespace husky {
 	}
 
 
-	// span, applied to a predicate p and a container, returns a pair where first element is longest prefix
+	// span_container, applied to a predicate p and a container, returns a pair where first element is longest prefix
 	// (possibly empty) of container of elements that satisfy p and second element is the remainder of the list.
-	// span p container is equivalent to (takeWhile p container, dropWhile p container).
+	// span_container p container is equivalent to (takeWhile p container, dropWhile p container).
 	template<typename Predicate, typename Cont>
 	std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> span_container(Predicate p, const Cont& container) {
 		std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> result;
@@ -563,9 +562,9 @@ namespace husky {
 		return result;
 	}
 
-	// break_, applied to a predicate p and a container, returns a tuple where first element is longest prefix
+	// break_container, applied to a predicate p and a container, returns a tuple where first element is longest prefix
 	// (possibly empty) of container of elements that do not satisfy p and second element is the remainder of the list.
-	// break_ p is equivalent to span (not(p)).
+	// break_container p is equivalent to span (not(p)).
 	template<typename Predicate, typename Cont>
 	std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> break_container(Predicate p, const Cont& container) {
 		std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> result;
