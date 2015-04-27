@@ -594,12 +594,12 @@ namespace husky {
 	/* ------ */
 
 	//Function Composition  Haskel definition:  (.) :: (b -> c) -> (a -> b) -> a -> c 
-	/*template<typename F, typename G>
+	template<typename F, typename G>
 	decltype(auto)compose(F&& f, G&& g)
 	{
 	return[=](auto x){return f(g(x)); };
 
-	}*/
+	}
 
 }
 
