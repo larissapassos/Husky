@@ -168,21 +168,31 @@ int main() {
 	
 	// concat for 1 vector
 	label = "concat1";
+	vector< vector<int> > vv1;
+	vv1.push_back(v1);
+	vv1.push_back(v4);
+	vector< vector<string> > vv2;
+	vv2.push_back(v2);
+	vv2.push_back(v5);
+	vector< vector<Record> > vv3;
+	vv3.push_back(v3);
+	vv3.push_back(v6);
+
 	
 	tstart = high_resolution_clock::now();
-	concat(v1);
+	concat1(vv1);
 	tend = high_resolution_clock::now();
 	timespan = duration_cast<milliseconds>(tend - tstart).count();
 	outInts << label << ": " << timespan << "ms\n";
 
 	tstart = high_resolution_clock::now();
-	concat(v2);
+	concat1(vv2);
 	tend = high_resolution_clock::now();
 	timespan = duration_cast<milliseconds>(tend - tstart).count();
 	outStrings << label << ": " << timespan << "ms\n";
 
 	tstart = high_resolution_clock::now();
-	concat(v3);
+	concat1(vv3);
 	tend = high_resolution_clock::now();
 	timespan = duration_cast<milliseconds>(tend - tstart).count();
 	outRecs << label << ": " << timespan << "ms\n";
@@ -254,19 +264,19 @@ int main() {
 	label = "reverse";
 
 	tstart = high_resolution_clock::now();
-	reverse(v1);
+	husky::reverse(v1);
 	tend = high_resolution_clock::now();
 	timespan = duration_cast<milliseconds>(tend - tstart).count();
 	outInts << label << ": " << timespan << "ms\n";
 
 	tstart = high_resolution_clock::now();
-	reverse(v2);
+	husky::reverse(v2);
 	tend = high_resolution_clock::now();
 	timespan = duration_cast<milliseconds>(tend - tstart).count();
 	outStrings << label << ": " << timespan << "ms\n";
 
 	tstart = high_resolution_clock::now();
-	reverse(v3);
+	husky::reverse(v3);
 	tend = high_resolution_clock::now();
 	timespan = duration_cast<milliseconds>(tend - tstart).count();
 	outRecs << label << ": " << timespan << "ms\n";
@@ -383,21 +393,24 @@ int main() {
 
 	// concatMap
 	label = "concatMap";
+	auto createVecInt = [](int x) { return vector<int> {x}; };
+	auto createVecString = [](string s) { return vector<string> {s}; };
+	auto createVecRecord = [](Record r) { return vector<Record> {r}; };
 
 	tstart = high_resolution_clock::now();
-	concatMap(v1, addint);
+	concatMap(v1, createVecInt);
 	tend = high_resolution_clock::now();
 	timespan = duration_cast<milliseconds>(tend - tstart).count();
 	outInts << label << ": " << timespan << "ms\n";
 
 	tstart = high_resolution_clock::now();
-	concatMap(v2, addstring);
+	concatMap(v2, createVecString);
 	tend = high_resolution_clock::now();
 	timespan = duration_cast<milliseconds>(tend - tstart).count();
 	outStrings << label << ": " << timespan << "ms\n";
 
 	tstart = high_resolution_clock::now();
-	concatMap(v3, addRecord);
+	concatMap(v3, createVecRecord);
 	tend = high_resolution_clock::now();
 	timespan = duration_cast<milliseconds>(tend - tstart).count();
 	outRecs << label << ": " << timespan << "ms\n";

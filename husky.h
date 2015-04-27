@@ -32,9 +32,11 @@ namespace husky {
 	// Special implementation of concat for a single container.
 	// Concatenates every element of the list into a single list
 	template<typename Cont>
-	Cont concat(const Cont& l) {
-		Cont result{ l };
-		for (auto elm : l) result.push_back(elm);
+	typename Cont::value_type concat1(const Cont& l) {
+		typename Cont::value_type result;
+		for (auto insideList : l) {
+			for (auto elm : insideList) result.push_back(elm);
+		}
 		return result;
 	}
 
@@ -140,6 +142,7 @@ namespace husky {
 	// reduces the list using the binary operator, from right to left:
 	template<typename Function, typename Cont, typename T>
 	T foldr(const Cont& container, T init, Function f) {
+		
 
 		for (auto rit = container.crbegin(); rit != container.crend(); ++rit) {
 			init = f(init, *rit);
@@ -303,8 +306,8 @@ namespace husky {
 
 	// concatMap - maps a given container with a given function and then concatenate the results
 	template<typename Cont, typename Function>
-	auto concatMap(const Cont& container, Function f) -> decltype(map(container, f)) {
-		return concat(map(container, f));
+	auto concatMap(const Cont& container, Function f) -> decltype(concat1(map(container, f))) {
+		return concat1(map(container, f));
 	}
 
 	/* ------------------- */
@@ -552,7 +555,7 @@ namespace husky {
 
 	// span_container, applied to a predicate p and a container, returns a pair where first element is longest prefix
 	// (possibly empty) of container of elements that satisfy p and second element is the remainder of the list.
-	// span_container p container is equivalent to (takeWhile p container, dropWhile p container).
+	// span p container is equivalent to (takeWhile p container, dropWhile p container).
 	template<typename Predicate, typename Cont>
 	std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> span_container(Predicate p, const Cont& container) {
 		std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> result;
@@ -564,7 +567,7 @@ namespace husky {
 
 	// break_container, applied to a predicate p and a container, returns a tuple where first element is longest prefix
 	// (possibly empty) of container of elements that do not satisfy p and second element is the remainder of the list.
-	// break_container p is equivalent to span (not(p)).
+	// break_ p is equivalent to span (not(p)).
 	template<typename Predicate, typename Cont>
 	std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> break_container(Predicate p, const Cont& container) {
 		std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> result;
