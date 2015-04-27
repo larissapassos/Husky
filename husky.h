@@ -495,7 +495,7 @@ namespace husky {
 	//Function takeWhile: applied to a predicate p and a list c, 
 	//returns the longest prefix (possibly empty) of c of elements that satisfy good:
 	template <typename Predicate, typename Cont>
-	std::vector<typename Cont::value_type> takeWhile(Predicate good, const Cont& c) {
+	std::vector<typename Cont::value_type> takeWhile(Predicate good, Cont& c) {
 		std::vector<typename Cont::value_type> prefix;
 
 		for (auto it = std::begin(c); it != std::end(c); ++it) {
@@ -524,7 +524,7 @@ namespace husky {
 
 	//Function dropWhile: dropWhile bad c returns the suffix remaining after predicate bad in c:
 	template <typename Predicate, typename Cont>
-	std::vector<typename Cont::value_type> dropWhile(Predicate bad, const Cont& c) {
+	std::vector<typename Cont::value_type> dropWhile(Predicate bad, Cont& c) {
 		std::vector<typename Cont::value_type> suffix;
 
 		bool keep_dropping = true;
@@ -557,7 +557,7 @@ namespace husky {
 	// (possibly empty) of container of elements that satisfy p and second element is the remainder of the list.
 	// span p container is equivalent to (takeWhile p container, dropWhile p container).
 	template<typename Predicate, typename Cont>
-	std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> span_container(Predicate p, const Cont& container) {
+	std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> span_container(Predicate p, Cont& container) {
 		std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> result;
 
 		result = std::make_pair(takeWhile(p, container), dropWhile(p, container));
@@ -569,10 +569,10 @@ namespace husky {
 	// (possibly empty) of container of elements that do not satisfy p and second element is the remainder of the list.
 	// break_ p is equivalent to span (not(p)).
 	template<typename Predicate, typename Cont>
-	std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> break_container(Predicate p, const Cont& container) {
+	std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> break_container(Predicate p, Cont& container) {
 		std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> result;
 
-		auto notP = [&](typename const Cont::value_type &x) { return !p(x); };
+		auto notP = [&](typename Cont::value_type &x) { return !p(x); };
 
 		result = std::make_pair(takeWhile(notP, container), dropWhile(notP, container));
 		return result;

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "husky.h"
+#include "../../husky.h"
 
 using namespace std;
 using namespace chrono;
@@ -12,9 +12,9 @@ using namespace husky;
 using tp = high_resolution_clock::time_point;
 
 // Files' path
-const char* intFile = "ints.txt";
-const char* stringFile = "strings.txt";
-const char* recFile = "records.txt";
+const char* intFile = "../Input/ints.txt";
+const char* stringFile = "../Input/strings.txt";
+const char* recFile = "../Input/records.txt";
 
 // Custom class for testing
 struct Record {

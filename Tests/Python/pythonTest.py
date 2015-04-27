@@ -2,9 +2,9 @@ import time
 from functools import reduce
 from itertools import takewhile, dropwhile
 
-intFile = "ints.txt"
-stringFile = "strings.txt"
-recFile = "records.txt"
+intFile = "../Input/ints.txt"
+stringFile = "../Input/strings.txt"
+recFile = "../Input/records.txt"
 
 class Record:
 	def __init__(self, num, s):

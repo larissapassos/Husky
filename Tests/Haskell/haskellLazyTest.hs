@@ -91,9 +91,9 @@ bigRecord :: Record -> Bool
 bigRecord (Record n s) = (bigNumber n) && (bigString s)
 
 main = do
-	ints <- readFile "ints.txt"
-	strings <- readFile "strings.txt"
-	recs <- readFile "records.txt"
+	ints <- readFile "../Input/ints.txt"
+	strings <- readFile "../Input/strings.txt"
+	recs <- readFile "../Input/records.txt"
 	let l1 = map rInt (lines ints)
 	let l2 = lines strings
 	let l3 = readRecords (map words (lines recs)) []
