@@ -1,2 +1,0 @@
-cons: 0ms
-concat2: 1ms

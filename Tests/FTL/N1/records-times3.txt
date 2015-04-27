@@ -1,0 +1,6 @@
+map: 35ms
+foldl: 8ms
+foldr: 10ms
+zip: 49ms
+zipWith: 48ms
+concatMap: 81ms

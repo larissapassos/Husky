@@ -5,15 +5,15 @@
 #include <string>
 #include <cstring>
 #include <vector>
-#include <ftl/prelude.h>
-#include <ftl/map.h>
-#include <ftl/vector.h>
-#include <ftl/string.h>
-#include <ftl/concepts/foldable.h>
-#include <ftl/type_traits.h>
-#include <ftl/concepts/functor.h>
-#include <ftl/concepts/common.h>
-#include <ftl/concepts/zippable.h>
+#include "ftl/prelude.h"
+#include "ftl/map.h"
+#include "ftl/vector.h"
+#include "ftl/string.h"
+#include "ftl/concepts/foldable.h"
+#include "ftl/type_traits.h"
+#include "ftl/concepts/functor.h"
+#include "ftl/concepts/common.h"
+#include "ftl/concepts/zippable.h"
 
 using namespace std;
 using namespace chrono;
@@ -21,9 +21,9 @@ using namespace ftl;
 using tp = high_resolution_clock::time_point;
 
 // Files' path
-const char* intFile = "ints.txt";
-const char* stringFile = "strings.txt";
-const char* recFile = "records.txt";
+const char* intFile = "../Input/ints.txt";
+const char* stringFile = "../Input/strings.txt";
+const char* recFile = "../Input/records.txt";
 
 // Custom class for testing
 struct Record {

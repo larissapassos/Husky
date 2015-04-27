@@ -4,9 +4,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "prelude.h"
-#include "list.h"
-#include "lambda.h"
+#include "fcpp/prelude.h"
+#include "fcpp/list.h"
+#include "fcpp/lambda.h"
 
 using namespace std;
 using namespace chrono;
@@ -14,9 +14,9 @@ using namespace fcpp;
 using tp = high_resolution_clock::time_point;
 
 // Files' path
-const char* intFile = "ints.txt";
-const char* stringFile = "strings.txt";
-const char* recFile = "records.txt";
+const char* intFile = "../Input/ints.txt";
+const char* stringFile = "../Input/strings.txt";
+const char* recFile = "../Input/records.txt";
 
 // Custom class for testing
 struct Record {
@@ -175,20 +175,20 @@ int main() {
 
     string prefix = "abababab";
 
-    tstart = high_resolution_clock::now();;
-    li = map(fcpp::plus(10), li);
+    tstart = high_resolution_clock::now();
+    map(fcpp::plus(10), li);
     tend = high_resolution_clock::now();
     auto timespan = duration_cast<milliseconds>(tend - tstart).count();
     outInts << label << ": " << timespan << "ms\n";
 
     tstart = high_resolution_clock::now();
-    ls = map(fcpp::plus(prefix), ls);
+    map(fcpp::plus(prefix), ls);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
     outStrings << label << ": " << timespan << "ms\n";
 
     tstart = high_resolution_clock::now();
-    lr = map(ptr_to_fun(&add_to_record), lr);
+    map(ptr_to_fun(&add_to_record), lr);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
     outRecs << label << ": " << timespan << "ms\n";
@@ -196,12 +196,16 @@ int main() {
     // Foldl a vector
     label = "foldl";
 
-    // Construct fcpp Lists
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
-    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    cout << " hi " << endl;
 
-    tstart = high_resolution_clock::now();;
+    // Construct fcpp Lists
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
+
+    cout << " bye " << endl;
+
+    tstart = high_resolution_clock::now();
     foldl(fcpp::plus, 0, li);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -222,25 +226,36 @@ int main() {
     // Foldr a vector
     label = "foldr";
 
-    // Construct fcpp Lists
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
-    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    cout << " hi again " << endl;
 
-    tstart = high_resolution_clock::now();;
-    foldr(fcpp::plus, 0, li);
+
+    // Construct fcpp Lists
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
+
+    cout << " hi again " << endl;
+
+    tstart = high_resolution_clock::now();
+    cout << "foldr begin" << endl;
+    //foldr(fcpp::plus, 0, li);
+    cout << "foldr end" << endl;
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
     outInts << label << ": " << timespan << "ms\n";
 
     tstart = high_resolution_clock::now();
-    foldr(ptr_to_fun(&sumStringr), 0, ls);
+    cout << "foldr begin" << endl;
+    //foldr(ptr_to_fun(&sumStringr), 0, ls);
+    cout << "foldr end" << endl;
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
     outStrings << label << ": " << timespan << "ms\n";
 
     tstart = high_resolution_clock::now();
-    foldr(ptr_to_fun(&sumRecordr), 0, lr);
+    cout << "foldr begin" << endl;
+    //foldr(ptr_to_fun(&sumRecordr), 0, lr);
+    cout << "foldr end" << endl;
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
     outRecs << label << ": " << timespan << "ms\n";
@@ -252,11 +267,15 @@ int main() {
     string hs = "a";
     Record r { hi, hs };
 
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
-    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    cout << " hi again " << endl;
 
-    tstart = high_resolution_clock::now();;
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
+
+    cout << " hi again " << endl;
+
+    tstart = high_resolution_clock::now();
     cons(hi, li);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -285,15 +304,19 @@ int main() {
     List<string> ls2;
     List<Record> lr2;
 
+    cout << " hi again " << endl;
+
     // Construct fcpp Lists
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
     for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
     for (int i = 0; i < si; ++i) li2 = cons(v4[i], li2);
     for (int i = 0; i < ss; ++i) ls2 = cons(v5[i], ls2);
     for (int i = 0; i < sr; ++i) lr2 = cons(v6[i], lr2);
 
-    tstart = high_resolution_clock::now();;
+    cout << " hi again " << endl;
+
+    tstart = high_resolution_clock::now();
     cat(li, li2);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -314,10 +337,14 @@ int main() {
     // Concat a vector
     label = "concat1";
 
+    cout << " hi again " << endl;
+
     // Construct fcpp Lists
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
     for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
+
+    cout << " hi again " << endl;
 
     List<List<int>> lti;
 
@@ -349,7 +376,7 @@ int main() {
         ltr = cons(aux, ltr);
     }
 
-    tstart = high_resolution_clock::now();;
+    tstart = high_resolution_clock::now();
     concat(lti);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -370,12 +397,16 @@ int main() {
     // tail
     label = "tail";
 
-    // Construct fcpp Lists
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
-    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    cout << " hi again " << endl;
 
-    tstart = high_resolution_clock::now();;
+    // Construct fcpp Lists
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
+
+    cout << " hi again " << endl;
+
+    tstart = high_resolution_clock::now();
     tail(li);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -396,12 +427,16 @@ int main() {
     // init
     label = "init";
 
-    // Construct fcpp Lists
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
-    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    cout << " hi again " << endl;
 
-    tstart = high_resolution_clock::now();;
+    // Construct fcpp Lists
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
+
+    cout << " hi again " << endl;
+
+    tstart = high_resolution_clock::now();
     init(li);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -422,12 +457,16 @@ int main() {
     // at
     label = "at";
 
-    // Construct fcpp Lists
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
-    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    cout << " hi again " << endl;
 
-    tstart = high_resolution_clock::now();;
+    // Construct fcpp Lists
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
+
+    cout << " hi again " << endl;
+
+    tstart = high_resolution_clock::now();
     at(li, length(li) - 1);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -448,12 +487,16 @@ int main() {
     // reverse
     label = "reverse";
 
-    // Construct fcpp Lists
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
-    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    cout << " hi again " << endl;
 
-    tstart = high_resolution_clock::now();;
+    // Construct fcpp Lists
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
+
+    cout << " hi again " << endl;
+
+    tstart = high_resolution_clock::now();
     //fcpp::reverse(li);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -475,24 +518,24 @@ int main() {
     label = "scanl";
 
     // Construct fcpp Lists
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
     for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
 
-    tstart = high_resolution_clock::now();;
-    scanl(fcpp::plus, 0, li);
+    tstart = high_resolution_clock::now();
+    //scanl(fcpp::plus, 0, li);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
     outInts << label << ": " << timespan << "ms\n";
 
     tstart = high_resolution_clock::now();
-    scanl(ptr_to_fun(&sumString), 0, ls);
+    //scanl(ptr_to_fun(&sumString), 0, ls);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
     outStrings << label << ": " << timespan << "ms\n";
 
     tstart = high_resolution_clock::now();
-    scanl(ptr_to_fun(&sumRecord), 0, lr);
+    //scanl(ptr_to_fun(&sumRecord), 0, lr);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
     outRecs << label << ": " << timespan << "ms\n";
@@ -501,24 +544,24 @@ int main() {
     label = "scanr";
 
     // Construct fcpp Lists
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
     for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
 
-    tstart = high_resolution_clock::now();;
-    scanr(fcpp::plus, 0, li);
+    tstart = high_resolution_clock::now();
+    //scanr(fcpp::plus, 0, li);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
     outInts << label << ": " << timespan << "ms\n";
 
     tstart = high_resolution_clock::now();
-    scanr(ptr_to_fun(&sumStringr), 0, ls);
+    //scanr(ptr_to_fun(&sumStringr), 0, ls);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
     outStrings << label << ": " << timespan << "ms\n";
 
     tstart = high_resolution_clock::now();
-    scanr(ptr_to_fun(&sumRecordr), 0, lr);
+    //scanr(ptr_to_fun(&sumRecordr), 0, lr);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
     outRecs << label << ": " << timespan << "ms\n";
@@ -526,11 +569,13 @@ int main() {
     // zip
     label = "zip";
 
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
-    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    cout << "zip" << endl;
 
-    tstart = high_resolution_clock::now();;
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
+
+    tstart = high_resolution_clock::now();
     auto liz = zip(li, li2);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -551,11 +596,13 @@ int main() {
     // zipWith
     label = "zipWith";
 
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
-    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    cout << "zipWith" << endl;
 
-    tstart = high_resolution_clock::now();;
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
+
+    tstart = high_resolution_clock::now();
     zipWith(fcpp::plus, li, li2);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -575,12 +622,13 @@ int main() {
 
     // unzip
     label = "unzip";
+    cout << "unzip" << endl;
 
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
     for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
 
-    tstart = high_resolution_clock::now();;
+    tstart = high_resolution_clock::now();
     unzip(liz);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -600,12 +648,13 @@ int main() {
 
     // filter
     label = "filter";
+    cout << "filter" << endl;
 
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
     for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
 
-    tstart = high_resolution_clock::now();;
+    tstart = high_resolution_clock::now();
     fcpp::filter(even, li);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -625,12 +674,13 @@ int main() {
 
     // take
     label = "take";
+    cout << "take" << endl;
 
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
     for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
 
-    tstart = high_resolution_clock::now();;
+    tstart = high_resolution_clock::now();
     fcpp::take(10000, li);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -650,12 +700,13 @@ int main() {
 
     // takeWhile
     label = "takeWhile";
+    cout << "takewhile" << endl;
 
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
     for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
 
-    tstart = high_resolution_clock::now();;
+    tstart = high_resolution_clock::now();
     fcpp::takeWhile(ptr_to_fun(&trueNumber), li);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -675,12 +726,13 @@ int main() {
 
     // drop
     label = "drop";
+    cout << "drop" << endl;
 
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
     for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
 
-    tstart = high_resolution_clock::now();;
+    tstart = high_resolution_clock::now();
     fcpp::drop(10000, li);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -700,12 +752,13 @@ int main() {
 
     // dropWhile
     label = "dropWhile";
+    cout << "dropwhile" << endl;
 
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
     for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
 
-    tstart = high_resolution_clock::now();;
+    tstart = high_resolution_clock::now();
     fcpp::dropWhile(ptr_to_fun(&trueNumber), li);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -725,12 +778,13 @@ int main() {
 
     // span
     label = "span";
+    cout << "span" << endl;
 
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
     for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
 
-    tstart = high_resolution_clock::now();;
+    tstart = high_resolution_clock::now();
     fcpp::span(ptr_to_fun(&bigNumber), li);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -750,12 +804,13 @@ int main() {
 
     // break
     label = "break";
+    cout << "break" << endl;
 
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
     for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
 
-    tstart = high_resolution_clock::now();;
+    tstart = high_resolution_clock::now();
     fcpp::break_(ptr_to_fun(&bigNumber), li);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
@@ -775,28 +830,29 @@ int main() {
 
     // splitAt
     label = "splitAt";
+    cout << "split" << endl;
 
-    for (int i = 0; i < si; ++i) li = cons(v1[i], li);
+    /*for (int i = 0; i < si; ++i) li = cons(v1[i], li);
     for (int i = 0; i < ss; ++i) ls = cons(v2[i], ls);
-    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);
+    for (int i = 0; i < sr; ++i) lr = cons(v3[i], lr);*/
 
-    tstart = high_resolution_clock::now();;
-    fcpp:splitAt(si / 2, li);
+    /*tstart = high_resolution_clock::now();
+    //fcpp::splitAt(si / 2, li);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
     outInts << label << ": " << timespan << "ms\n";
 
     tstart = high_resolution_clock::now();
-    fcpp::splitAt(ss / 2, ls);
+    //fcpp::splitAt(ss / 2, ls);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
     outStrings << label << ": " << timespan << "ms\n";
 
     tstart = high_resolution_clock::now();
-    fcpp::splitAt(sr / 2, lr);
+    //fcpp::splitAt(sr / 2, lr);
     tend = high_resolution_clock::now();
     timespan = duration_cast<milliseconds>(tend - tstart).count();
-    outRecs << label << ": " << timespan << "ms\n";
+    outRecs << label << ": " << timespan << "ms\n";*/
 
     outInts.close();
     outStrings.close();

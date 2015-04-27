@@ -10,7 +10,7 @@ using namespace std;
 using namespace chrono;
 
 // Store the strings in the static area to avoid allocating heap space
-const static size_t N = 100000;
+const static size_t N = 500000;
 
 // Class that encapsulates a pseudo-random generator
 class Rand_Int {
