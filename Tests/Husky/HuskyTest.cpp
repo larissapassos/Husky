@@ -89,9 +89,16 @@ vector<Record> constructRecordVector(const vector<int>& v1, const vector<string>
 	return v3;
 }
 
-/* ------------------------- */
-/* Auxiliary functions below */
-/* ------------------------ */
+string getSpaces(const vector<string>& v) {
+	string s;
+	int i = 0;
+	for (auto w : v) {
+		if (i == 10000) break;
+		s = s + ' ' + w;
+		++i;
+	}
+	return s;
+}
 
 
 int main() {
@@ -545,9 +552,17 @@ int main() {
 	timespan = duration_cast<milliseconds>(tend - tstart).count();
 	outRecs << label << ": " << timespan << "ms\n";
 
+	// unlines
+	label = "unlines";
+
+	tstart = high_resolution_clock::now();
+	string s = unlines(v2);
+	tend = high_resolution_clock::now();
+	timespan = duration_cast<milliseconds>(tend - tstart).count();
+	outStrings << label << ": " << timespan << "ms\n";
+
 	// lines
 	label = "lines";
-	string s{ "a\nb\nc\nd\n" };
 
 	tstart = high_resolution_clock::now();
 	lines(s);
@@ -555,21 +570,13 @@ int main() {
 	timespan = duration_cast<milliseconds>(tend - tstart).count();
 	outStrings << label << ": " << timespan << "ms\n";
 
-	// unlines
-	label = "unlines";
-
-	tstart = high_resolution_clock::now();
-	unlines(v2);
-	tend = high_resolution_clock::now();
-	timespan = duration_cast<milliseconds>(tend - tstart).count();
-	outStrings << label << ": " << timespan << "ms\n";
 
 	// words
 	label = "words";
-	string s1{ "a b c d" };
+	string s1 = getSpaces(v2);
 
 	tstart = high_resolution_clock::now();
-	auto v16 = words(s1);
+	words(s1);
 	tend = high_resolution_clock::now();
 	timespan = duration_cast<milliseconds>(tend - tstart).count();
 	outStrings << label << ": " << timespan << "ms\n";
@@ -578,7 +585,7 @@ int main() {
 	label = "unwords";
 
 	tstart = high_resolution_clock::now();
-	unwords(v16);
+	unwords(v2);
 	tend = high_resolution_clock::now();
 	timespan = duration_cast<milliseconds>(tend - tstart).count();
 	outStrings << label << ": " << timespan << "ms\n";
