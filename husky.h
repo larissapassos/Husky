@@ -522,7 +522,7 @@ namespace husky {
 		return suffix;
 	}
 
-	//Function dropWhile: dropWhile bad c returns the suffix remaining after takeWhile bad c:
+	//Function dropWhile: dropWhile bad c returns the suffix remaining after predicate bad in c:
 	template <typename Predicate, typename Cont>
 	std::vector<typename Cont::value_type> dropWhile(Predicate bad, const Cont& c) {
 		std::vector<typename Cont::value_type> suffix;
