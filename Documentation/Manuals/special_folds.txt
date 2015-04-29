@@ -1,0 +1,73 @@
+husky::product
+
+Prototype
+----------
+template<typename Cont, typename T>
+T product(const Cont& container, T init);
+
+Definition
+----------
+
+The product function computes the product of the elements in a given container. 
+Value is calculated iteratively and accumulated on an accumulator variable, with 
+initial value defined by the init parameter.
+
+Parameters
+----------
+
+container
+Const reference to the container that contains forward iterators.
+
+init
+Initial value for the accumulator. Most common value used is 1.
+
+Return value
+------------
+
+The result of multiplying init and all the elements in the container.
+
+Example
+--------
+
+1) Define a supported container and guarantee that its beginning and end iterators can be obtained (e.g. std::vector, std::list, std::array, int[]).
+2) Make sure the type of the elements in the container have support for multiplication (i.e. operator*).
+3) Call husky::product with the specified arguments, remembering to define a starting value
+
+In the example code given, the second call to husky::product used -1 as a starting value. This results in the multiplication of the container elements
+having its value inverted. 
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+  std::vector<int> vec{ 1, 2, 3, 4, 5 };
+
+  std::cout << husky::product(vec.begin(), vec.end(), 1);
+  std::cout << '\n';
+
+  std::cout << husky::product(vec.begin(), vec.end(), -1);
+  std::cout << '\n';
+
+  return 0;
+}
+
+Output:
+120
+-120
+
+Complexity
+----------
+
+Linear in the size of the container.
+
+Data Races
+----------
+
+The elements in the container are accessed (each element is accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if any of std::multiplies, the assignments or an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.

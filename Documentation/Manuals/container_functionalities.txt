@@ -1,0 +1,133 @@
+husky::printCont
+
+Prototype
+----------
+
+template<typename Cont>
+void printCont(const Cont& l);
+
+Definition
+----------
+
+The printCont function receives a container and prints its elements (if they have an operator<< implemented) in a formatted way.
+
+Parameters
+----------
+
+l
+Container to be printed.
+
+Return value
+------------
+
+The function does not return any value. The elements of the container are printed using std::cout.
+
+Example
+--------
+
+1) Define a supported container and guarantee that its beginning and end iterators can be obtained (e.g. std::vector, std::list, std::array, int[]).
+2) Call husky::printCont with the container as it argument.
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+
+  std::vector<int> v { 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+  husky::printCont(v);
+
+  return 0;
+}
+
+Output:
+[ 1 2 3 4 5 6 7 8 9 ]
+
+Complexity
+----------
+
+Linear in the size of the container.
+
+Data Races
+----------
+
+The elements in the container are accessed (each element is accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if an iterator throws.
+Note that invalid arguments cause undefined behavior.
+
+
+
+**************************************************************************************
+
+
+husky::cons
+
+Prototype
+----------
+
+template<typename Cont>
+Cont cons(typename Cont::value_type head, const Cont& tail);
+
+Definition
+----------
+
+The cons function implements the Haskell list constructor. It receives a container and an element of the same type as those in the container, and returns a new container that is a copy of the first, with the head element at its front.
+
+Parameters
+----------
+
+head
+Element to be placed at the head of the new container.
+
+tail
+Container to be copied to the new container.
+
+Return value
+------------
+
+A new container with head as its first element, and tail as the remainder of its elements.
+
+Example
+--------
+
+1) Define a supported container and guarantee that its beginning and end iterators can be obtained (e.g. std::vector, std::list, std::array, int[]).
+2) Define an element of the same type as the elements in the container.
+3) Call husky::cons with the specified arguments
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+  std::vector<int> v { 1, 2, 3, 4, 5, 6, 7, 8, 9};
+  int h = 0;
+
+  husky::printCont(husky::cons(h, v));
+
+  return 0;
+}
+
+Output:
+[ 0 1 2 3 4 5 6 7 8 9 ]
+
+Complexity
+----------
+
+Linear in the size of the container.
+
+Data Races
+----------
+
+The elements in the container are accessed (each element is accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if an iterator or the insert method throws.
+Note that invalid arguments cause undefined behavior.

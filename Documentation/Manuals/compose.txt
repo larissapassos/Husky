@@ -1,0 +1,73 @@
+husky::compose
+
+Prototype
+----------
+
+template<typename F, typename G>
+decltype(auto)compose(F&& f, G&& g)
+
+Definition
+----------
+
+The function works as defined by the Haskel Function Composition: 
+(.) :: (b -> c) -> (a -> b) -> a -> c 
+This function only works in C++14.
+
+
+Parameters
+----------
+
+f: first function
+
+g: second function. Its input type has to be the same return type of the
+first function.
+
+
+Return value
+------------
+
+Function composition based on the two functions given., i.e. h, where h(x) = f(g(x)).
+
+
+Example
+--------
+
+1) Define a function f and another function g
+2) Enter a value for x
+
+#include <iostream>
+#include <vector>
+#include "husky.h"
+
+
+int f(int x) { return x + 1; }
+int g(int x) { return x * 2; }
+int h(int x) { return x - 1; }
+
+int main () {
+  
+  
+  std::cout << husky::compose(f, g)(3) << "\n";
+
+
+  return 0;
+}
+
+Output:
+7
+
+Complexity
+----------
+
+The complexity corresponds to the product of the complexity of f and g.
+
+Data Races
+----------
+
+No data races.
+
+Error Handling
+--------------
+
+Throws if any of the functions throws. Note that invalid arguments cause undefined 
+behavior.

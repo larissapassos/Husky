@@ -1,0 +1,150 @@
+husky::take
+
+Prototype
+----------
+
+template <typename Value, typename Cont>
+std::vector<typename Cont::value_type> take(Value v, const Cont& c)
+
+Definition
+----------
+
+The function take will select variable v, applied to a list c, 
+returns the prefix of c of length v, or c itself if v > length c.
+Follows the Haskel take function definition: take :: Int -> [a] -> [a]
+
+Parameters
+----------
+
+v
+A distinct integer for number of elements in the container
+
+c
+Any std container that uses forward iterators.
+
+Return value
+------------
+
+A container with the number of elements given
+
+Example
+--------
+
+1) Define a supported container that uses forward iterators (e.g. std::vector, std::list).
+2) Give the number of elemets you want in the new container
+
+ 
+#include <iostream>
+#include <vector>
+#include "husky.h"
+
+
+int main () {
+  
+  	std::vector<int> sample = {1,2,3,4,5};
+	for( auto x : sample) std::cout << x << " ";
+	std << "\n";
+
+	husky::printCont(husky::take(3, sample));
+
+ 	return 0;
+}
+
+Output:
+1 2 3 4 5
+[ 1 2 3 ]
+
+
+Complexity
+----------
+
+Linear in the size of the container.
+
+Data Races
+----------
+
+The elements in the container are accessed (each element may be accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if the operations on iterators throws.
+Note that invalid arguments cause undefined behavior.
+
+
+**************************************************************************************
+
+husky::drop
+
+Prototype
+----------
+
+template <typename Value, typename Cont>
+std::vector<typename Cont::value_type> drop(Value v, const Cont& c)
+
+Definition
+----------
+
+The function drop will return the suffix of c after the first v elements,
+or [] if v > length c:
+Follows the Haskel drop function definition: take :: Int -> [a] -> [a]
+
+Parameters
+----------
+
+v
+A distinct integer for number of elements in the container
+
+c
+Any std container that uses forward iterators.
+
+Return value
+------------
+
+A container with the elements positioned in the original container after the given number v.
+
+Example
+--------
+
+1) Define a supported container that uses forward iterators (e.g. std::vector, std::list).
+2) Give the number of elemets you want in the new container
+
+ 
+#include <iostream>
+#include <vector>
+#include "husky.h"
+
+int main () {
+  
+  	std::vector<int> sample = {1,2,3,4,5};
+	for( auto x : sample) std::cout << x << " ";
+
+	husky::printCont(husky::drop(3, sample));
+
+	std::cout<< std::endl;
+
+ 	return 0;
+}
+
+Output:
+1 2 3 4 5
+[ 4 5 ]
+
+
+Complexity
+----------
+
+Linear in the size of the container.
+
+Data Races
+----------
+
+The elements in the container are accessed (each element may be accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if the operations on iterators throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************

@@ -1,0 +1,232 @@
+husky::filter
+
+Prototype
+----------
+
+template<typename Cont, typename Predicate>
+Cont filter(const Cont& data, Predicate good)
+
+Definition
+----------
+
+The filter function generates a new container with the elements of the first one which
+satisfy a given predicate. The new container is returned with the filtered elements 
+leaving the original container untouched.
+
+Parameters
+----------
+
+data
+Any std container that uses forward iterators.
+
+good
+Unary function that accepts an element in the range as argument, and returns a value 
+convertible to bool. The value returned indicates whether the element is to be added to 
+the new container or not. The function shall not modify its argument.  This can either 
+be a function pointer or a function object.
+
+Return value
+------------
+
+A new container is returned with the filtered elements leaving the original container 
+untouched.
+
+Example
+--------
+
+1) Define a supported container that uses forward iterators (e.g. std::vector, 
+std::list).
+2) Call husky::filter with the specified arguments, remembering to pass in a 
+predicate function
+
+ 
+#include <iostream>          
+#include <vector>
+#include "husky.h"
+
+
+bool isOdd (int i) { return ((i%2)==1); }
+
+int main () {
+  
+  std::vector<int> test { 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+
+  husky::printCont(husky::filter(test, isOdd));
+  husky::printCont(husky::filter(test, [](int value){ return value > 4;}));
+
+  return 0;
+}
+
+Output:
+[ 1 3 5 7 9 ]
+[ 5 6 7 8 9 ]
+
+Complexity
+----------
+
+Linear in the size of the container.
+
+Data Races
+----------
+
+The elements in the container are accessed (each element is accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if any of pred, the element assignments or the operations on iterators throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+
+husky::takewhile
+
+Prototype
+----------
+
+template <typename Predicate, typename Cont>
+std::vector<typename Cont::value_type> takeWhile(Predicate good, const Cont& c) 
+
+Definition
+----------
+
+The function takewhile applied to a predicate p and a list c, returns the longest prefix (possibly empty) of the first c elements that satisfies the predicate.
+
+Follows the Haskel takewhile function definition: 
+takeWhile :: (a -> Bool) -> [a] -> [a]
+
+Parameters
+----------
+
+good
+Unary function that accepts an element in the range as argument, and returns a value convertible to bool. The value returned indicates whether the element is to be added to the new container.
+The function shall not modify its argument.  This can either be a function pointer or a function object.
+
+c
+Any std container that uses forward iterators.
+
+Return value
+------------
+
+A container with the elements as defined by the predicate
+
+Example
+--------
+
+1) Define a supported container that uses forward iterators (e.g. std::vector, std::list).
+2) Provide a predicate function to apply to the container
+
+ 
+#include <iostream>
+#include <vector>
+#include "husky.h"
+
+
+int main () {
+  
+  	std::vector<int> sample3 = {1,2,3,4,5,1,2,3,4};
+
+	for( auto x : sample3) std::cout << x << " ";
+	
+	husky::printCont(husky::takeWhile([](int value){ return value < 4;}, sample3));
+
+ 	return 0;
+}
+
+Output:
+1 2 3 4 5 1 2 3 4 
+[ 1 2 3 ]
+
+Complexity
+----------
+
+Linear in the size of the container.
+
+Data Races
+----------
+
+The elements in the container are accessed (each element may be accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if the operations on iterators or the predicate throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+husky::dropwhile
+
+Prototype
+----------
+
+template <typename Predicate, typename Cont>
+std::vector<typename Cont::value_type> dropWhile(Predicate bad, Cont& c)
+
+Definition
+----------
+
+The function dropwhile applied to a predicate bad and a container c, returns the suffix of the first elements in c that satisfy bad.
+Follows the Haskel takewhile function definition: 
+dropWhile :: (a -> Bool) -> [a] -> [a]
+
+Parameters
+----------
+
+bad
+Unary function that accepts an element in the range as argument, and returns a value convertible to bool. The value returned indicates whether the element is to be added to the new container.
+The function shall not modify its argument.  This can either be a function pointer or a function object.
+
+c
+Any std container that uses forward iterators.
+
+Return value
+------------
+
+A container with the elements as defined by the predicate
+
+Tutorial
+--------
+
+1) Define a supported container that uses forward iterators (e.g. std::vector, std::list).
+2) Provide a predicate function to apply to the container
+
+#include <iostream>
+#include <vector>
+#include "husky.h"
+
+int main () {
+  
+ 	std::vector<int>sample4 = {1,2,3,4,5,1,2,3,4};
+
+	for( auto x : sample4) std::cout << x << " ";
+	std::cout << "\n";
+	
+	husky::printCont(husky::dropWhile([](int value){ return value < 3;}, sample3));
+
+ 	return 0;
+}
+
+Output:
+1 2 3 4 5 1 2 3 4 
+[ 3 4 5 1 2 3 4 ]
+
+Complexity
+----------
+
+Linear in the size of the container.
+
+Data Races
+----------
+
+The elements in the container are accessed (each element may be accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if the operations on iterators or the predicate throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
