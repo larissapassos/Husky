@@ -4,7 +4,7 @@ Prototype
 ----------
 
 template <typename Value, typename Cont>
-std::vector<typename Cont::value_type> take(Value v, const Cont& c)
+std::vector<typename Cont::value_type> take(Value v, const Cont& c);
 
 Definition
 ----------
@@ -80,7 +80,7 @@ Prototype
 ----------
 
 template <typename Value, typename Cont>
-std::vector<typename Cont::value_type> drop(Value v, const Cont& c)
+std::vector<typename Cont::value_type> drop(Value v, const Cont& c);
 
 Definition
 ----------
@@ -148,3 +148,136 @@ Throws if the operations on iterators throws.
 Note that invalid arguments cause undefined behavior.
 
 **************************************************************************************
+
+husky::reverse
+
+Prototype
+----------
+
+template<typename Cont>
+Cont reverse(const Cont& l);
+
+Definition
+----------
+
+The reverse function receives a container and returns a container that contains the same elements as the original, but in reverse order.
+
+Parameters
+----------
+
+l
+Const reference to a container.
+
+Return value
+------------
+
+A new container that is equal to the first one, except that its elements are in reverse order.
+
+Example
+--------
+
+1) Define a supported container and populate it.
+2) Call husky::reverse with the specified argument.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+  std::vector<int> v { 0, 1, 2, 3, 4, 5 };
+
+  husky::printCont(husky::reverse(v));
+
+  return 0;
+}
+
+Output:
+[ 5 4 3 2 1 0 ]
+
+Complexity
+----------
+
+Linear in the size of the container
+
+Data Races
+----------
+
+The elements of the containers are accessed (each element is accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+husky::splitAt
+
+Prototype
+----------
+
+template<typename Cont>
+std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> splitAt(int n, const Cont& container)
+
+Definition
+----------
+
+Returns a pair where first element is the container prefix of length n and second element is the remainder of the container. It is equivalent to (take n container, drop n container).
+
+Parameters
+----------
+
+n
+The index of where the split will be made
+
+container
+Const reference to a container.
+
+Return value
+------------
+
+A pair of vectors, with the first one containing the prefix of length n and the second one storing the suffix of the original container
+
+Example
+--------
+
+1) Define a supported container and populate it.
+2) Call husky::splitAt with the specified argument.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+  std::vector<int> v { 0, 1, 2, 3, 4, 5 };
+
+  auto p = husky::splitAt(3, v);
+  husky::printCont(std::get<0>(p));
+  husky::printCont(std::get<1>(p));
+
+  return 0;
+}
+
+Output:
+[ 0 1 2 ]
+[ 3 4 5 ]
+
+Complexity
+----------
+
+Linear in the size of the container
+
+Data Races
+----------
+
+The elements of the containers are accessed (each element is accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.
+

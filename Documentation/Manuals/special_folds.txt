@@ -2,6 +2,7 @@ husky::product
 
 Prototype
 ----------
+
 template<typename Cont, typename T>
 T product(const Cont& container, T init);
 
@@ -43,10 +44,10 @@ having its value inverted.
 int main () {
   std::vector<int> vec{ 1, 2, 3, 4, 5 };
 
-  std::cout << husky::product(vec.begin(), vec.end(), 1);
+  std::cout << husky::product(vec, 1);
   std::cout << '\n';
 
-  std::cout << husky::product(vec.begin(), vec.end(), -1);
+  std::cout << husky::product(vec, -1);
   std::cout << '\n';
 
   return 0;
@@ -70,4 +71,376 @@ Error Handling
 --------------
 
 Throws if any of std::multiplies, the assignments or an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+husky::sum
+
+Prototype
+----------
+
+template<typename Cont, typename T>
+T sum(const Cont& container, T init);
+
+Definition
+----------
+
+The sum function computes the summation of the elements in a given container. 
+Value is calculated iteratively and accumulated on an accumulator variable, with 
+initial value defined by the init parameter.
+
+Parameters
+----------
+
+container
+Const reference to the container that contains forward iterators.
+
+init
+Initial value for the accumulator. Most common value used is 0.
+
+Return value
+------------
+
+The result of adding init and all the elements in the container.
+
+Example
+--------
+
+1) Define a supported container and guarantee that its beginning and end iterators can be obtained (e.g. std::vector, std::list, std::array, int[]).
+2) Make sure the type of the elements in the container have support for addition (i.e. operator+).
+3) Call husky::sum with the specified arguments, remembering to define a starting value
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+  std::vector<int> vec{ 1, 2, 3, 4, 5 };
+
+  std::cout << husky::sum(vec, 0);
+  std::cout << '\n';
+
+  std::cout << husky::sum(vec, -15);
+  std::cout << '\n';
+
+  return 0;
+}
+
+Output:
+15
+0
+
+Complexity
+----------
+
+Linear in the size of the container.
+
+Data Races
+----------
+
+The elements in the container are accessed (each element is accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if any of std::accumulate, the assignments or an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+husky::and_fold
+
+Prototype
+----------
+
+template<typename Cont>
+bool and_fold(const Cont& container);
+
+Definition
+----------
+
+The and_fold function returns a logical and operation for every value in the given container.
+
+Parameters
+----------
+
+container
+Const reference to the container that contains forward iterators.
+
+Return value
+------------
+
+The result of applying and to all the elements in the container.
+
+Example
+--------
+
+1) Define a supported container and guarantee that its beginning and end iterators can be obtained (e.g. std::vector, std::list, std::array, int[]).
+2) Call husky::and_fold with the specified argument
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+  std::vector<bool> vec_true{ true, true, true, true, true };
+  std::vector<bool> vec_false{ false, false, false, false, false };
+  std::vector<bool> vec_mixed{ true, false, true, false, true };
+
+  std::cout << husky::and_fold(vec_true);
+  std::cout << '\n';
+
+  std::cout << husky::and_fold(vec_false);
+  std::cout << '\n';
+
+  std::cout << husky::and_fold(vec_mixed);
+  std::cout << '\n';
+
+  return 0;
+}
+
+Output:
+true
+false
+false
+
+Complexity
+----------
+
+Linear in the size of the container.
+
+Data Races
+----------
+
+The elements in the container are accessed (each element is accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if any of std::accumulate, the assignments or an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+husky::or_fold
+
+Prototype
+----------
+
+template<typename Cont>
+bool or_fold(const Cont& container);
+
+Definition
+----------
+
+The or_fold function returns a logical or operation for every value in the given container.
+
+Parameters
+----------
+
+container
+Const reference to the container that contains forward iterators.
+
+Return value
+------------
+
+The result of applying or to all the elements in the container.
+
+Example
+--------
+
+1) Define a supported container and guarantee that its beginning and end iterators can be obtained (e.g. std::vector, std::list, std::array, int[]).
+2) Call husky::or_fold with the specified argument
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+  std::vector<bool> vec_true{ true, true, true, true, true };
+  std::vector<bool> vec_false{ false, false, false, false, false };
+  std::vector<bool> vec_mixed{ true, false, true, false, true };
+
+  std::cout << husky::or_fold(vec_true);
+  std::cout << '\n';
+
+  std::cout << husky::or_fold(vec_false);
+  std::cout << '\n';
+
+  std::cout << husky::or_fold(vec_mixed);
+  std::cout << '\n';
+
+  return 0;
+}
+
+Output:
+true
+false
+true
+
+Complexity
+----------
+
+Linear in the size of the container.
+
+Data Races
+----------
+
+The elements in the container are accessed (each element is accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if any of std::accumulate, the assignments or an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+husky::maximum_of
+
+Prototype
+----------
+
+template<typename Cont>
+typename Cont::iterator::value_type maximum_of(const Cont& container);
+template<typename Cont, typename Comp>
+typename Cont::iterator::value_type maximum_of(const Cont& container, Comp comp)
+
+Definition
+----------
+
+The maximum_of function returns the maximum value in a given container, using the default comparison operators or a user defined comparison function.
+
+Parameters
+----------
+
+container
+Const reference to the container that contains forward iterators.
+
+comp
+Comparison function defined by the user. It must be a binary function that accepts two elements of the container as arguments, and returns a value convertible to bool. The value returned indicates whether the element passed as first argument is considered less than the second.
+
+Return value
+------------
+
+The largest element in the container.
+
+Example
+--------
+
+1) Define a supported container and guarantee that its beginning and end iterators can be obtained (e.g. std::vector, std::list, std::array, int[]).
+2) Call husky::maximum_of with the specified argument
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+bool gt(int i, int j) { return i>j; }
+
+int main () {
+  std::vector v1 = { 100, 34, 356, 5, 31};
+
+  std::cout << husky::maximum_of(v1);
+  std::cout << '\n';
+
+  std::cout << husky::maximum_of(v1, gt);
+  std::cout << '\n';
+
+  return 0;
+}
+
+Output:
+356
+5
+
+Complexity
+----------
+
+Linear in one less than the number of elements compared.
+
+Data Races
+----------
+
+The elements in the container are accessed.
+
+Error Handling
+--------------
+
+Throws if any comparison or an iterator throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+husky::minimum_of
+
+Prototype
+----------
+
+template<typename Cont>
+typename Cont::iterator::value_type minimum_of(const Cont& container);
+template<typename Cont, typename Comp>
+typename Cont::iterator::value_type minimum_of(const Cont& container, Comp comp)
+
+Definition
+----------
+
+The minimum_of function returns the minimum value in a given container, using the default comparison operators or a user defined comparison function.
+
+Parameters
+----------
+
+container
+Const reference to the container that contains forward iterators.
+
+comp
+Comparison function defined by the user. It must be a binary function that accepts two elements of the container as arguments, and returns a value convertible to bool. The value returned indicates whether the element passed as first argument is considered less than the second.
+
+Return value
+------------
+
+The smallest element in the container.
+
+Example
+--------
+
+1) Define a supported container and guarantee that its beginning and end iterators can be obtained (e.g. std::vector, std::list, std::array, int[]).
+2) Call husky::minimum_of with the specified argument
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+bool gt(int i, int j) { return i>j; }
+
+int main () {
+  std::vector v1 = { 100, 34, 356, 5, 31};
+
+  std::cout << husky::minimum_of(v1);
+  std::cout << '\n';
+
+  std::cout << husky::minimum_of(v1, gt);
+  std::cout << '\n';
+
+  return 0;
+}
+
+Output:
+5
+356
+
+Complexity
+----------
+
+Linear in one less than the number of elements compared.
+
+Data Races
+----------
+
+The elements in the container are accessed.
+
+Error Handling
+--------------
+
+Throws if any comparison or an iterator throws.
 Note that invalid arguments cause undefined behavior.

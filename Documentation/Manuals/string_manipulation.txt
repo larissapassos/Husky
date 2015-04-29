@@ -1,0 +1,256 @@
+husky::lines
+
+Prototype
+----------
+
+std::vector<std::string> lines(const std::string& str);
+
+Definition
+----------
+
+Breaks a string up into a list of strings at newline characters. The resulting strings do not contain newlines. Returns a vector of these strings.
+
+Parameters
+----------
+
+str
+Const reference to a string.
+
+Return value
+------------
+
+A vector of the broken up strings.
+
+Example
+--------
+
+1) Define a string with new line characters.
+2) Call husky::lines with the specified argument.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include <string>
+#include "husky.h"
+
+int main () {
+  std::string phrase = "Hello\nworld\nfrom\nHusky!";
+  auto res = husky::lines(phrase);
+
+  husky::printCont(res);
+
+  return 0;
+}
+
+Output:
+[ Hello world from Husky! ]
+
+Complexity
+----------
+
+Linear in the size of the string.
+
+Data Races
+----------
+
+The string is accessed.
+
+Error Handling
+--------------
+
+Throws if std::getline throws.
+
+**************************************************************************************
+
+husky::unlines
+
+Prototype
+----------
+
+std::string unlines(const std::vector<std::string>& vec);
+
+Definition
+----------
+
+An inverse operation to lines. It joins strings, after appending a terminating newline to each. Returns a single string.
+
+Parameters
+----------
+
+vec
+Const reference to a vector of strings.
+
+Return value
+------------
+
+A string obtained from the joining of each of the vector's elements, appended by the newline character.
+
+Example
+--------
+
+1) Define a vector of strings.
+2) Call husky::unlines with the specified argument.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include <string>
+#include "husky.h"
+
+int main () {
+  std::vector<std::string> v { "Hello", "world", "from", "Husky!" };
+  auto res = husky::unlines(v);
+
+  std::cout << res;
+
+  return 0;
+}
+
+Output:
+Hello
+world
+from
+Husky!
+
+Complexity
+----------
+
+Linear in the size of the vector.
+
+Data Races
+----------
+
+The vector is accessed. All of its elements are accessed once.
+
+Error Handling
+--------------
+
+Throws if an iterator, or std::string.append throws.
+
+**************************************************************************************
+
+husky::words
+
+Prototype
+----------
+
+std::vector<std::string> words(const std::string& str);
+
+Definition
+----------
+
+Breaks a string up into a list of strings at white space characters. Returns a vector of these strings.
+
+Parameters
+----------
+
+str
+Const reference to a string.
+
+Return value
+------------
+
+A vector of the broken up strings.
+
+Example
+--------
+
+1) Define a string with white space characters.
+2) Call husky::words with the specified argument.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include <string>
+#include "husky.h"
+
+int main () {
+  std::string phrase = "Hello world from Husky!";
+  auto res = husky::words(phrase);
+
+  husky::printCont(res);
+
+  return 0;
+}
+
+Output:
+[ Hello world from Husky! ]
+
+Complexity
+----------
+
+Linear in the size of the string.
+
+Data Races
+----------
+
+The string is accessed.
+
+Error Handling
+--------------
+
+Throws if std::getline throws.
+
+**************************************************************************************
+
+husky::unwords
+
+Prototype
+----------
+
+std::string unwords(const std::vector<std::string>& vec);
+
+Definition
+----------
+
+An inverse operation to words. It joins strings, after appending a terminating white space to each. Returns a single string.
+
+Parameters
+----------
+
+vec
+Const reference to a vector of strings.
+
+Return value
+------------
+
+A string obtained from the joining of each of the vector's elements, appended by the white space character.
+
+Example
+--------
+
+1) Define a vector of strings.
+2) Call husky::unwords with the specified argument.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include <string>
+#include "husky.h"
+
+int main () {
+  std::vector<std::string> v { "Hello", "world", "from", "Husky!" };
+  auto res = husky::unlines(v);
+
+  std::cout << res;
+
+  return 0;
+}
+
+Output:
+Hello world from Husky!
+
+Complexity
+----------
+
+Linear in the size of the vector.
+
+Data Races
+----------
+
+The vector is accessed. All of its elements are accessed once.
+
+Error Handling
+--------------
+
+Throws if an iterator, or std::string.append throws.

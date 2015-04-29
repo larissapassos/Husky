@@ -1,0 +1,157 @@
+husky::map
+
+Prototype
+----------
+
+template <typename Cont, typename Function>
+std::vector<typename std::result_of<Function(typename Cont::value_type)>::type> map(const Cont& l, Function f);
+
+Definition
+----------
+
+The map function receives a container and a unary function and returs a new container such that its elements are the results of applying the function to the elements in the original container.
+
+Parameters
+----------
+
+l
+Any std container that uses forward iterators.
+
+f
+Unary function that accepts an element in the range as argument.
+
+Return value
+------------
+
+A new container is returned with the results of applying f to the elements in the original container.
+
+Example
+--------
+
+1) Define a supported container that uses forward iterators (e.g. std::vector, 
+std::list).
+2) Call husky::map with the specified arguments, remembering to pass in a 
+unary function
+
+ 
+#include <iostream>          
+#include <vector>
+#include "husky.h"
+
+
+struct addx {
+	addx(int x) :x(x) {}
+	int operator()(int y) { return x + y; }
+
+private:
+	int x;
+};
+
+int main () {
+  
+  std::vector<int> v = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+  addx add42{ 42 };
+
+
+  husky::printCont(husky::map(v, add42));
+
+  return 0;
+}
+
+Output:
+[ 43 44 45 46 47 48 49 50 51 ]
+
+Complexity
+----------
+
+Linear in the size of the container.
+
+Data Races
+----------
+
+The elements in the container are accessed (each element is accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if any of function, the element assignments or the operations on iterators throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+husky::concatMap
+
+Prototype
+----------
+
+template<typename Cont, typename Function>
+auto concatMap(const Cont& container, Function f) -> decltype(concat1(map(container, f)));
+
+Definition
+----------
+
+Maps a given container with a given function and then concatenate the results.
+
+Parameters
+----------
+
+container
+Any std container that uses forward iterators.
+
+f
+Unary function that accepts an element in the range as argument and returns a container type.
+
+Return value
+------------
+
+A new container is returned with the results of concatenating the resulting containers from applying f to all elements in the original container.
+
+Example
+--------
+
+1) Define a supported container that uses forward iterators (e.g. std::vector, 
+std::list).
+2) Call husky::map with the specified arguments, remembering to pass in a 
+unary function
+
+ 
+#include <iostream>          
+#include <vector>
+#include "husky.h"
+
+vector<int> createVecInt(int x) { 
+	std::vector<int> v; 
+	for (int i = 0; i < x; ++i) v.push_back(i);
+	return v;
+}
+
+int main () {
+
+  
+  
+  std::vector<int> v = { 1, 2, 3, 4 };
+
+
+  husky::printCont(husky::concatMap(v, createVecInt));
+
+  return 0;
+}
+
+Output:
+[ 0 0 1 0 1 2 0 1 2 3 ]
+
+Complexity
+----------
+
+O(n*m), where n is the size of the container and m is the complexity of the function.
+
+Data Races
+----------
+
+The elements in the container are accessed (each element is accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if any of function, the element assignments or the operations on iterators throws.
+Note that invalid arguments cause undefined behavior.

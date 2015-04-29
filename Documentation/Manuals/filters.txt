@@ -4,7 +4,7 @@ Prototype
 ----------
 
 template<typename Cont, typename Predicate>
-Cont filter(const Cont& data, Predicate good)
+Cont filter(const Cont& data, Predicate good);
 
 Definition
 ----------
@@ -87,7 +87,7 @@ Prototype
 ----------
 
 template <typename Predicate, typename Cont>
-std::vector<typename Cont::value_type> takeWhile(Predicate good, const Cont& c) 
+std::vector<typename Cont::value_type> takeWhile(Predicate good, const Cont& c);
 
 Definition
 ----------
@@ -163,7 +163,7 @@ Prototype
 ----------
 
 template <typename Predicate, typename Cont>
-std::vector<typename Cont::value_type> dropWhile(Predicate bad, Cont& c)
+std::vector<typename Cont::value_type> dropWhile(Predicate bad, Cont& c);
 
 Definition
 ----------
@@ -230,3 +230,151 @@ Throws if the operations on iterators or the predicate throws.
 Note that invalid arguments cause undefined behavior.
 
 **************************************************************************************
+
+
+husky::span_container
+
+Prototype
+----------
+
+template<typename Predicate, typename Cont>
+std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> span_container(Predicate p, Cont& container);
+
+Definition
+----------
+
+The function span_container, applied to a predicate p and a container, returns a pair where the first element is the longest prefix (possibly empty) of the original container that satisfies p and second element is the remainder of the container. It is equivalent to (takeWhile p container, dropWhile p container).
+
+Parameters
+----------
+
+p
+Unary function that accepts an element in the range as argument, and returns a value convertible to bool.
+
+container
+Any std container that uses forward iterators.
+
+Return value
+------------
+
+A pair of vectors where the first element is the longest prefix (possibly empty) of the original container that satisfies p and second element is the remainder of the container.
+
+Example
+--------
+
+1) Define a supported container that uses forward iterators (e.g. std::vector, std::list).
+2) Provide a predicate function to apply to the container
+
+ 
+#include <iostream>
+#include <vector>
+#include "husky.h"
+
+
+int main () {
+  
+  	std::vector<int> v = {1,2,3,4,5,1,2,3,4};
+  	auto lt4 = [](int value){ return value < 4;};
+	
+	auto p = husky::span_container(lt4, v);
+
+  	husky::printCont(std::get<0>(p));
+  	husky::printCont(std::get<1>(p));
+
+ 	return 0;
+}
+
+Output:
+[ 1 2 3 ]
+[ 4 5 1 2 3 4 ]
+
+Complexity
+----------
+
+Linear in the size of the container.
+
+Data Races
+----------
+
+The elements in the container are accessed (each element may be accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if the operations on iterators or the predicate throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+
+husky::break_container
+
+Prototype
+----------
+
+template<typename Predicate, typename Cont>
+std::pair<std::vector<typename Cont::value_type>, std::vector<typename Cont::value_type>> break_container(Predicate p, Cont& container);
+
+Definition
+----------
+
+The function break_container, applied to a predicate p and a container, returns a pair where the first element is the longest prefix (possibly empty) of the original container that does not satisfy p and second element is the remainder of the container. It is equivalent to span_container(not(p), v).
+
+Parameters
+----------
+
+p
+Unary function that accepts an element in the range as argument, and returns a value convertible to bool.
+
+container
+Any std container that uses forward iterators.
+
+Return value
+------------
+
+A pair of vectors where the first element is the longest prefix (possibly empty) of the original container that does not satisfy p and the second element is the remainder of the container.
+
+Example
+--------
+
+1) Define a supported container that uses forward iterators (e.g. std::vector, std::list).
+2) Provide a predicate function to apply to the container
+
+ 
+#include <iostream>
+#include <vector>
+#include "husky.h"
+
+
+int main () {
+  
+  	std::vector<int> v = {1,2,3,4,5,1,2,3,4};
+  	auto gt4 = [](int value){ return value > 4;};
+	
+	auto p = husky::span_container(gt4, v);
+
+  	husky::printCont(std::get<0>(p));
+  	husky::printCont(std::get<1>(p));
+
+ 	return 0;
+}
+
+Output:
+[ 1 2 3 ]
+[ 4 5 1 2 3 4 ]
+
+Complexity
+----------
+
+Linear in the size of the container.
+
+Data Races
+----------
+
+The elements in the container are accessed (each element may be accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if the operations on iterators or the predicate throws.
+Note that invalid arguments cause undefined behavior.

@@ -1,0 +1,461 @@
+husky::zip
+
+Prototype
+----------
+
+template <typename Cont1, typename Cont2>
+std::vector<std::pair<typename Cont1::value_type, typename Cont2::value_type>> zip(const Cont1& l1, const Cont2& l2)
+
+Definition
+----------
+
+The zip function receives two containers and returns a vector of pairs formed by the previous containers' elements. If one of the containers is smaller than the other, the operation stops after the end of the smaller container.
+
+Parameters
+----------
+
+l1
+Const reference to a container that contains forward iterators.
+
+l2
+Const reference to a container that contains forward iterators.
+
+Return value
+------------
+
+A vector of pairs formed by the previous containers' elements
+
+Example
+--------
+
+1) Define two supported containers and guarantee that their beginning and end iterators can be obtained (e.g. std::vector, std::list, std::array, int[]).
+2) Call husky::zip with the specified arguments.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+template<typename Cont>
+void printTuple(const Cont& l) {
+	cout << "[ ";
+	for (auto tpl : l) {
+		cout << "(" << std::get<0>(tpl) << ", " << std::get<1>(tpl) << ") ";
+	}
+	cout << "]\n";
+}
+
+int main () {
+  std::vector<int> v1 { 1, 2, 3, 4, 5 };
+  std::vector<int> v2 { 6, 7, 8, 9 };
+
+  printTuple(husky::zip(v1, v2));
+
+  return 0;
+}
+
+Output:
+[ (1, 6) (2, 7) (3, 8) (4, 9) ]
+
+Complexity
+----------
+
+Linear in the size of the smallest container.
+
+Data Races
+----------
+
+The elements of the containers are accessed (each element may be accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+husky::zip3
+
+Prototype
+----------
+
+template <typename Cont1, typename Cont2, typename Cont3>
+std::vector<std::tuple<typename Cont1::value_type, typename Cont2::value_type, typename Cont3::value_type>> zip3(const Cont1& l1, const Cont2& l2, const Cont3& l3)
+
+Definition
+----------
+
+The zip3 function receives three containers and returns a vector of tuples formed by the previous containers' elements. If one of the containers is smaller than the others, the operation stops after the end of the smaller container.
+
+Parameters
+----------
+
+l1
+Const reference to a container that contains forward iterators.
+
+l2
+Const reference to a container that contains forward iterators.
+
+l3
+Const reference to a container that contains forward iterators.
+
+Return value
+------------
+
+A vector of tuples formed by the previous containers' elements
+
+Example
+--------
+
+1) Define three supported containers and guarantee that their beginning and end iterators can be obtained (e.g. std::vector, std::list, std::array, int[]).
+2) Call husky::zip3 with the specified arguments.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include <string>
+#include "husky.h"
+
+template<typename Cont>
+void printTriple(const Cont& l) {
+	cout << "[ ";
+	for (auto tpl : l) {
+		cout << "(" << std::get<0>(tpl) << ", " << std::get<1>(tpl) << ", " << std::get<2>(tpl) << ") ";
+	}
+	cout << "]\n";
+}
+
+int main () {
+  std::vector<int> v1 { 1, 2, 3, 4, 5 };
+  std::vector<int> v2 { 6, 7, 8, 9 };
+  std::vector<std::string> v3 = { "a" , "b" , "c"};
+
+  printTriple(husky::zip3(v1, v2, v3));
+
+  return 0;
+}
+
+Output:
+[ (1, 6, a) (2, 7, b) (3, 8, c) ]
+
+Complexity
+----------
+
+Linear in the size of the smallest container.
+
+Data Races
+----------
+
+The elements of the containers are accessed (each element may be accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+husky::zipWith
+
+Prototype
+----------
+
+template<typename Function, typename Cont1, typename Cont2>
+std::vector<typename std::result_of<Function(typename Cont1::value_type, typename Cont2::value_type)>::type> zipWith(Function f, const Cont1& l1, const Cont2& l2)
+
+Definition
+----------
+
+The zipWith receives function a binary function and two containers and returns a vector of the results of applying the function to one element from each container. If one of the containers is smaller than the other, the operation stops after the end of the smaller container.
+
+Parameters
+----------
+
+f
+A binary function that can receive two arguments, each from one of the containers.
+
+l1
+Const reference to a container that contains forward iterators.
+
+l2
+Const reference to a container that contains forward iterators.
+
+Return value
+------------
+
+A vector of the results of applying the function to each pair of containers' elements.
+
+Example
+--------
+
+1) Define two supported containers and guarantee that their beginning and end iterators can be obtained (e.g. std::vector, std::list, std::array, int[]).
+2) Call husky::zipWith with the specified arguments, including the function.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+  std::vector<int> v1 { 1, 2, 3, 4, 5 };
+  std::vector<int> v2 { 6, 7, 8, 9 };
+
+  printTuple(husky::zipWith(std::plus<int>(), v1, v2));
+
+  return 0;
+}
+
+Output:
+[ 7 9 11 13 ]
+
+Complexity
+----------
+
+Linear in the size of the smallest container.
+
+Data Races
+----------
+
+The elements of the containers are accessed (each element may be accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+husky::zipWith3
+
+Prototype
+----------
+
+template<typename Function, typename Cont1, typename Cont2, typename Cont3>
+std::vector<typename std::result_of<Function(typename Cont1::value_type, typename Cont2::value_type, typename Cont3::value_type)>::type> zipWith3(Function f, const Cont1& l1, const Cont2& l2, const Cont3& l3)
+
+Definition
+----------
+
+The zipWith3 receives function a ternary function and three containers and returns a vector of the results of applying the function to one element from each container. If one of the containers is smaller than the others, the operation stops after the end of the smaller container.
+
+Parameters
+----------
+
+f
+A binary function that can receive two arguments, each from one of the containers.
+
+l1
+Const reference to a container that contains forward iterators.
+
+l2
+Const reference to a container that contains forward iterators.
+
+l3
+Const reference to a container that contains forward iterators.
+
+Return value
+------------
+
+A vector of the results of applying the function to each triple of containers' elements.
+
+Example
+--------
+
+1) Define three supported containers and guarantee that their beginning and end iterators can be obtained (e.g. std::vector, std::list, std::array, int[]).
+2) Call husky::zipWith3 with the specified arguments, including the function.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include <string>
+#include "husky.h"
+
+template<typename Cont>
+void printTriple(const Cont& l) {
+	cout << "[ ";
+	for (auto tpl : l) {
+		cout << "(" << std::get<0>(tpl) << ", " << std::get<1>(tpl) << ", " << std::get<2>(tpl) << ") ";
+	}
+	cout << "]\n";
+}
+
+int main () {
+  std::vector<int> v1 { 1, 2, 3, 4, 5 };
+  std::vector<int> v2 { 6, 7, 8, 9 };
+  std::vector<std::string> v3 { "abacus", "ball", "car" };
+  auto func = [](int x, std::string s, int y) { return x + s.length() + y; };
+
+  printTuple(husky::zipWith(func, v1, v3, v2));
+
+  return 0;
+}
+
+Output:
+[ 13 13 14 ]
+
+Complexity
+----------
+
+Linear in the size of the smallest container.
+
+Data Races
+----------
+
+The elements of the containers are accessed (each element may be accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+husky::unzip
+
+Prototype
+----------
+
+template<typename T, typename V>
+std::pair<std::vector<T>, std::vector<V>> unzip(const std::vector<std::pair<T, V>>& l) 
+
+Definition
+----------
+
+The unzip function receives a vector of pairs and returns a pair of vectors containing the separated elements of each pair.
+
+Parameters
+----------
+
+l
+Const reference to a vector of pairs.
+
+Return value
+------------
+
+A pair of vectors containing the first and second elements of each pair.
+
+Example
+--------
+
+1) Define a supported container and guarantee that its beginning and end iterators can be obtained (e.g. std::vector, std::list, std::array, int[]).
+2) Call husky::unzip with the specified argument.
+
+
+#include <iostream>     // std::cout
+#include <utility>      // std::pair
+#include <vector>       // std::vector
+#include "husky.h"
+
+
+int main () {
+  std::vector<int> v1 { 1, 2, 3, 4, 5 };
+  std::vector<int> v2 { 6, 7, 8, 9 };
+  std::vector<std::pair<int, int>> v = husky::zip(v1, v2); // v = [ (1, 6) (2, 7) (3, 8) (4, 9) ]
+
+  auto p = (husky::unzip(v));
+  husky::printCont(std::get<0>(p));
+  husky::printCont(std::get<1>(p));
+
+  return 0;
+}
+
+Output:
+[ 1 2 3 4 ]
+[ 6 7 8 9 ]
+
+Complexity
+----------
+
+Linear in the size of the container.
+
+Data Races
+----------
+
+The elements of the container are accessed (each element is accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+husky::unzip3
+
+Prototype
+----------
+
+template<typename T, typename V, typename W>
+std::tuple<std::vector<T>, std::vector<V>, std::vector<W>> unzip3(const std::vector<std::tuple<T, V, W>>& l)
+
+Definition
+----------
+
+The unzip3 function receives a vector of tuples with three elements and returns a tuple of vectors containing the separated elements of each tuple.
+
+Parameters
+----------
+
+l
+Const reference to a vector of tuples with three elements.
+
+
+Return value
+------------
+
+A tuple of vectors containing the separated elements of each tuple.
+
+Example
+--------
+
+1) Define a supported container and guarantee that its beginning and end iterators can be obtained (e.g. std::vector, std::list, std::array, int[]).
+2) Call husky::unzip3 with the specified argument.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include <string>
+#include <tuple>
+#include "husky.h"
+
+
+int main () {
+  std::vector<int> v1 { 1, 2, 3, 4, 5 };
+  std::vector<int> v2 { 6, 7, 8, 9 };
+  std::vector<string> v3 = { "a" , "b" , "c"};
+  std::vector<std::tuple<int, int, std::string>> v = zip3(v1, v2, v3)
+  // v = [ (1, 6, a) (2, 7, b) (3, 8, c) ]
+
+  auto p = (husky::unzip3(v));
+  husky::printCont(std::get<0>(p));
+  husky::printCont(std::get<1>(p));
+  husky::printCont(std::get<2>(p));
+
+  return 0;
+}
+
+Output:
+[ 1 2 3 ]
+[ 6 7 8 ]
+[ a b c ]
+
+Complexity
+----------
+
+Linear in the size of the smallest container.
+
+Data Races
+----------
+
+The elements of the containers are accessed (each element may be accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.

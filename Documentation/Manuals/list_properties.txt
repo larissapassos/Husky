@@ -1,0 +1,593 @@
+husky::head
+
+Prototype
+----------
+
+template<typename Cont>
+typename Cont::value_type head(const Cont& l);
+
+Definition
+----------
+
+The head function receives a container and returns a copy of the container's first element.
+
+Parameters
+----------
+
+l
+Const reference to a container.
+
+Return value
+------------
+
+The element at the head of the container
+
+Example
+--------
+
+1) Define a supported container and populate it.
+2) Call husky::head with the specified argument.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+  std::vector<int> v { 0, 1, 2, 3, 4, 5 };
+
+  std::cout << husky::head(v) << endl;
+
+  return 0;
+}
+
+Output:
+0
+
+Complexity
+----------
+
+Constant
+
+Data Races
+----------
+
+The container is accessed. The first element is copied.
+
+Error Handling
+--------------
+
+If the container is not empty, the function never throws exceptions (no-throw guarantee).
+Otherwise, it causes undefined behavior.
+
+**************************************************************************************
+
+husky::last
+
+Prototype
+----------
+
+template<typename Cont>
+typename Cont::value_type last(const Cont& l);
+
+Definition
+----------
+
+The last function receives a container and returns a copy of the container's last element.
+
+Parameters
+----------
+
+l
+Const reference to a container.
+
+Return value
+------------
+
+The element at the end of the container
+
+Example
+--------
+
+1) Define a supported container and populate it.
+2) Call husky::last with the specified argument.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+  std::vector<int> v { 0, 1, 2, 3, 4, 5 };
+
+  std::cout << husky::last(v) << endl;
+
+  return 0;
+}
+
+Output:
+5
+
+Complexity
+----------
+
+Constant
+
+Data Races
+----------
+
+The container is accessed. The last element is copied.
+
+Error Handling
+--------------
+
+If the container is not empty, the function never throws exceptions (no-throw guarantee).
+Otherwise, it causes undefined behavior.
+
+**************************************************************************************
+
+husky::tail
+
+Prototype
+----------
+
+template<typename Cont>
+Cont tail(const Cont& l);
+
+Definition
+----------
+
+The tail function receives a container and returns a container that is a copy of the first one, with the exception of the first element.
+
+Parameters
+----------
+
+l
+Const reference to a container.
+
+Return value
+------------
+
+A new container that is equal to the first one, except for the first element.
+
+Example
+--------
+
+1) Define a supported container and populate it.
+2) Call husky::tail with the specified argument.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+  std::vector<int> v { 0, 1, 2, 3, 4, 5 };
+
+  husky::printCont(husky::tail(v));
+
+  return 0;
+}
+
+Output:
+[ 1 2 3 4 5 ]
+
+Complexity
+----------
+
+Linear in the size of the container
+
+Data Races
+----------
+
+The elements of the containers are accessed (each element is accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+husky::init
+
+Prototype
+----------
+
+template<typename Cont>
+Cont init(const Cont& l);
+
+Definition
+----------
+
+The init function receives a container and returns a container that is a copy of the first one, with the exception of the last element.
+
+Parameters
+----------
+
+l
+Const reference to a container.
+
+Return value
+------------
+
+A new container that is equal to the first one, except for the last element.
+
+Example
+--------
+
+1) Define a supported container and populate it.
+2) Call husky::init with the specified argument.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+  std::vector<int> v { 0, 1, 2, 3, 4, 5 };
+
+  husky::printCont(husky::init(v));
+
+  return 0;
+}
+
+Output:
+[ 0 1 2 3 4 ]
+
+Complexity
+----------
+
+Linear in the size of the container
+
+Data Races
+----------
+
+The elements of the containers are accessed (each element is accessed exactly once).
+
+Error Handling
+--------------
+
+Throws if an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+husky::is_null
+
+Prototype
+----------
+
+template<typename Cont>
+bool is_null(const Cont& l);
+
+Definition
+----------
+
+The null function receives a container and returns whether the container is empty (i.e. whether its size is 0).
+
+Parameters
+----------
+
+l
+Const reference to a container.
+
+Return value
+------------
+
+true if the container size is 0, false otherwise
+
+Example
+--------
+
+1) Define a supported container and populate it.
+2) Call husky::is_null with the specified argument.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+  std::vector<int> v1 { 0, 1, 2, 3, 4, 5 };
+  std::vector<int> v2;
+
+  std::cout << husky::is_null(v1) << endl;
+  std::cout << husky::is_null(v2) << endl;
+
+  return 0;
+}
+
+Output:
+false
+true
+
+Complexity
+----------
+
+Constant
+
+Data Races
+----------
+
+The container is accessed.
+No contained elements are accessed: concurrently accessing or modifying them is safe.
+
+Error Handling
+--------------
+
+No-throw guarantee: this member function never throws exceptions.
+
+**************************************************************************************
+
+husky::length
+
+Prototype
+----------
+
+template<typename Cont>
+unsigned int length(const Cont& l);
+
+Definition
+----------
+
+The length function receives a container and returns the number of objects held in the container.
+
+Parameters
+----------
+
+l
+Const reference to a container.
+
+Return value
+------------
+
+The number of elements in the container
+
+Example
+--------
+
+1) Define a supported container and populate it.
+2) Call husky::length with the specified argument.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+  std::vector<int> v1 { 0, 1, 2, 3, 4, 5 };
+
+  std::cout << husky::length(v1) << endl;
+
+  return 0;
+}
+
+Output:
+6
+
+Complexity
+----------
+
+Constant
+
+Data Races
+----------
+
+The container is accessed.
+No contained elements are accessed: concurrently accessing or modifying them is safe.
+
+Error Handling
+--------------
+
+No-throw guarantee: this member function never throws exceptions.
+
+**************************************************************************************
+
+
+husky::at
+
+Prototype
+----------
+
+template <typename Cont>
+typename Cont::value_type at(const Cont& l, int index) {
+
+Definition
+----------
+
+The function at receives a container and a integer and returns a copy of the element at the index position. If the index is bigger than the size of the container, it returns the last element. If the index is negative, returs the first element in the container.
+
+Parameters
+----------
+
+l
+Any std container that uses forward iterators.
+
+index
+A integer representing the position to be accessed.
+
+Return value
+------------
+
+The copy of the element at position index in the container, the first element of the container if index < 0, or the last element of the container if index > husky::length(l).
+
+Example
+--------
+
+1) Define a supported container that uses forward iterators (e.g. std::vector, std::list).
+2) Provide a integer index.
+3) Call husky::at with the specified arguments.
+
+ 
+#include <iostream>
+#include <vector>
+#include "husky.h"
+
+
+int main () {
+  
+  	std::vector<int> v = {1,2,3,4,5,6,7,8,9};
+
+	std::cout << husky::at(v, 7) << endl;
+
+ 	return 0;
+}
+
+Output:
+8
+
+Complexity
+----------
+
+Linear in the size of the container.
+
+Data Races
+----------
+
+The elements in the container are accessed (each element may be accessed exactly once).
+
+Error Handling
+--------------
+
+No-throw guarantee: this member function never throws exceptions.
+
+
+**************************************************************************************
+
+husky::elem
+
+Prototype
+----------
+
+template<typename Cont, typename T>
+bool elem(const T& val, const Cont& container);
+
+Definition
+----------
+
+The container membership predicate. Returns true if an element equal to val was found at the given container.
+
+Parameters
+----------
+
+val
+Object that may or may not be in the container
+
+container
+Const reference to a container.
+
+Return value
+------------
+
+true if there is an element in the container equal to val, false otherwise
+
+Example
+--------
+
+1) Define a supported container and populate it.
+2) Call husky::elem with the specified arguments.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+  std::vector<int> v1 { 0, 1, 2, 3, 4, 5 };
+
+  std::cout << husky::elem(4) << endl;
+  std::cout << husky::elem(10) << endl;
+
+  return 0;
+}
+
+Output:
+true
+false
+
+Complexity
+----------
+
+Linear in the size of the container
+
+Data Races
+----------
+
+The container is accessed. All of its elements may be accessed at most once.
+
+Error Handling
+--------------
+
+Throws if either an element comparison or an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.
+
+**************************************************************************************
+
+husky::notElem
+
+Prototype
+----------
+
+template<typename Cont, typename T>
+bool notElem(const T& val, const Cont& container);
+
+Definition
+----------
+
+The negation of elem.
+
+Parameters
+----------
+
+val
+Object that may or may not be in the container
+
+container
+Const reference to a container.
+
+Return value
+------------
+
+true if there is not an element in the container equal to val, false otherwise
+
+Example
+--------
+
+1) Define a supported container and populate it.
+2) Call husky::notElem with the specified arguments.
+
+
+#include <iostream>     // std::cout
+#include <vector>       // std::vector
+#include "husky.h"
+
+int main () {
+  std::vector<int> v1 { 0, 1, 2, 3, 4, 5 };
+
+  std::cout << husky::notElem(4) << endl;
+  std::cout << husky::notElem(10) << endl;
+
+  return 0;
+}
+
+Output:
+false
+true
+
+Complexity
+----------
+
+Linear in the size of the container
+
+Data Races
+----------
+
+The container is accessed. All of its elements may be accessed at most once.
+
+Error Handling
+--------------
+
+Throws if either an element comparison or an operation on an iterator throws.
+Note that invalid arguments cause undefined behavior.
