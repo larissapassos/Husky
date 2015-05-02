@@ -138,11 +138,11 @@ namespace husky {
 		return std::accumulate(first, last, init, f);
 	}
 
-	// foldr, applied to a binary operator, a starting value (typically the right-identity of the operator), and a list, 
+	// foldr, applied to a binary operator, a starting value (typically the right-identity of the operator), and a list,
 	// reduces the list using the binary operator, from right to left:
 	template<typename Function, typename Cont, typename T>
 	T foldr(const Cont& container, T init, Function f) {
-		
+
 
 		for (auto rit = container.crbegin(); rit != container.crend(); ++rit) {
 			init = f(init, *rit);
@@ -476,7 +476,7 @@ namespace husky {
 	}
 
 
-	//Function take: take v, applied to a list c, returns the prefix of c of length v, 
+	//Function take: take v, applied to a list c, returns the prefix of c of length v,
 	//or c itself if v > length c:
 	template <typename Value, typename Cont>
 	std::vector<typename Cont::value_type> take(Value v, const Cont& c) {
@@ -492,7 +492,7 @@ namespace husky {
 	}
 
 
-	//Function takeWhile: applied to a predicate p and a list c, 
+	//Function takeWhile: applied to a predicate p and a list c,
 	//returns the longest prefix (possibly empty) of c of elements that satisfy good:
 	template <typename Predicate, typename Cont>
 	std::vector<typename Cont::value_type> takeWhile(Predicate good, Cont& c) {
@@ -593,7 +593,7 @@ namespace husky {
 	/* C++ 14 */
 	/* ------ */
 
-	//Function Composition  Haskel definition:  (.) :: (b -> c) -> (a -> b) -> a -> c 
+	//Function Composition  Haskel definition:  (.) :: (b -> c) -> (a -> b) -> a -> c
 	template<typename F, typename G>
 	decltype(auto)compose(F&& f, G&& g)
 	{
